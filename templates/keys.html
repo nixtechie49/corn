@@ -1,0 +1,22 @@
+<script src="/static/js/jquery.quicksearch.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('input#key_search').quicksearch('ul#keys li');
+    });
+    function getValue(key) {
+        $.ajax({
+            type: "POST",
+            url: "/value/",
+            data: {key: key, col: '{{target}}', db: '{{db}}'},
+            dataType: "text",
+            success: function (data) {
+                $('#show').empty();   //清空resText里面的所有内容
+                $('#show').html(data);
+            }
+        });
+    }
+</script>
+<ul id="keys">{% for key in keys %}
+    <li><a href="#" onclick="getValue('{{key}}')">{{ key }}</a></li>
+    {% end %}
+</ul>
