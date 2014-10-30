@@ -2,4 +2,4 @@ corn
 ====
 
 a redis explorer.
-a python software.
+a python3.4 software.
