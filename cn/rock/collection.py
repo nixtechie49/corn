@@ -33,9 +33,8 @@ def saveconfig(name, property):
     """
     ip = property['ip']
     port = property['port']
-    if property.has_key('db'):
-        db = property['db']
-    else:
+    db = property['db']
+    if not db:
         db = '0'
     col = {'ip': ip, 'port': port, 'db': db}
     constants.REDIS_CONFIG[name] = col
@@ -44,7 +43,7 @@ def saveconfig(name, property):
 def getPool(name, db):
     location = constants.REDIS_CONFIG[name]
     key = name + '_' + db
-    if not constants.REDIS_POOL.has_key(key):
+    if not constants.REDIS_POOL.get(key):
         constants.REDIS_POOL[key] = redis.ConnectionPool(host=location['ip'], port=location['port'], db=db)
     return constants.REDIS_POOL[key]
 
@@ -56,16 +55,18 @@ def getRedis(name, db='0'):
 
 def getValue(key, r):
     type = r.type(key)
+    print(type)
     value = ''
-    if type == 'hash':
+    # TODO 分页
+    if type == b'hash':
         value = r.hgetall(key)
-    elif type == 'string':
-        value = r.get(key)
-    elif type == 'list':
+    elif type == b'string':
+        value = r.get(key).decode(constants.CHARSET)
+    elif type == b'list':
         value = r.lrange(key, 0, -1)
-    elif type == 'set':
+    elif type == b'set':
         value = r.smembers(key)
-    elif type == 'zset':
+    elif type == b'zset':
         value = r.zrange(key, 0, -1)
     return value
 

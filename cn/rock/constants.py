@@ -14,3 +14,4 @@ REDIS_POOL = {}
 
 CURRENT_REDIS = None
 CURRENT_DB = 0
+CHARSET = 'utf-8'
