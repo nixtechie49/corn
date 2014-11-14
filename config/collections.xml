@@ -10,4 +10,14 @@
         <port>7379</port>
         <db>1</db>
     </conllection>
+    <conllection name="card_test">
+        <ip>192.168.214.164</ip>
+        <port>6379</port>
+        <db>0</db>
+    </conllection>
+    <conllection name="banner_test">
+        <ip>10.10.224.80</ip>
+        <port>6380</port>
+        <db>0</db>
+    </conllection>
 </conllections>

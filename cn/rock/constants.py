@@ -15,3 +15,5 @@ REDIS_POOL = {}
 CURRENT_REDIS = None
 CURRENT_DB = 0
 CHARSET = 'utf-8'
+
+LOG_FORMAT = '[%(asctime)s]-[%(levelname)s]-[%(thread)d]=[%(threadName)s] : %(message)s [from %(filename)s|%(module)s|%(funcName)s]'

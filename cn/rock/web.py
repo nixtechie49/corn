@@ -9,6 +9,9 @@ from cn.rock import constants, collection, parsermap
 
 class HomeHandler(tornado.web.RequestHandler):
     def get(self):
+        self.post()
+
+    def post(self):
         if len(constants.REDIS_CONFIG) < 1:
             raise tornado.web.HTTPError(403)
         target = self.get_argument('target', None)
@@ -18,10 +21,28 @@ class HomeHandler(tornado.web.RequestHandler):
             target = names[-1]
         if not db:
             db = constants.REDIS_CONFIG[target]['db']
+        self.render('welcome.html', names=names, target=target, db=db)
+
+
+import json
+
+
+class CollectionHandler(tornado.web.RequestHandler):
+    def get(self):
+        result = {}
+        target = self.get_argument('target', None)
+        db = self.get_argument('db', None)
+        names = list(constants.REDIS_CONFIG.keys())
+        if names and not target:
+            target = names[0]
+        if not db:
+            db = constants.REDIS_CONFIG[target]['db']
+        result['db'] = str(db)
         r = collection.getRedis(target, db)
         keys = r.keys()
-        value = ''
-        self.render('welcome.html', names=names, target=target, db=db, keys=keys, value=value)
+        result['keys'] = keys
+        data = json.dumps(result, ensure_ascii=False)
+        self.write(data)
 
 
 class ValueHandler(tornado.web.RequestHandler):

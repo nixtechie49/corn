@@ -33,10 +33,13 @@ def saveconfig(name, property):
     """
     ip = property['ip']
     port = property['port']
-    db = property['db']
-    if not db:
-        db = '0'
-    col = {'ip': ip, 'port': port, 'db': db}
+    db = '0'
+    if property.has_key('db'):
+        db = property['db']
+    time = 5000
+    if property.has_key('timeout'):
+        time = property['timeout']
+    col = {'ip': ip, 'port': port, 'db': db, 'time': time}
     constants.REDIS_CONFIG[name] = col
 
 
@@ -44,7 +47,8 @@ def getPool(name, db):
     location = constants.REDIS_CONFIG[name]
     key = name + '_' + db
     if not constants.REDIS_POOL.get(key):
-        constants.REDIS_POOL[key] = redis.ConnectionPool(host=location['ip'], port=location['port'], db=db)
+        constants.REDIS_POOL[key] = redis.ConnectionPool(host=location['ip'], port=location['port'], db=db,
+                                                         socket_timeout=location['time'])
     return constants.REDIS_POOL[key]
 
 

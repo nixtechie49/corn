@@ -1,5 +1,7 @@
 # encoding:utf-8
 __author__ = 'rock'
+import sys
+
 import tornado.ioloop
 import tornado.web
 
@@ -17,12 +19,17 @@ settings = {'debug': True,
 
 application = tornado.web.Application([
                                           (r"/", web.HomeHandler),
+                                          (r"/collection/", web.CollectionHandler),
                                           (r"/value/", web.ValueHandler),
                                       ], **settings)
 
 from cn.rock import collection
+import logging
 
 if __name__ == "__main__":
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+    logging.basicConfig(format=constants.LOG_FORMAT, datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
     collection.loadConllectionsConfig()
     application.listen(PORT)
     tornado.ioloop.IOLoop.instance().start()

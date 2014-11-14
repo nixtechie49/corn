@@ -1,19 +1,4 @@
-<script type="text/javascript">
-    $(function () {
-        $("#collection").find("option[value='{{target}}']").attr("selected", true);
-        $('#base').val('{{db}}');
-    });
-    function changeCollection(target) {
-        window.location.href = '/?target=' + target;
-    }
-    function changeBase(db) {
-        var target = $('#target').val();
-        window.location.href = '/?target=' + target + '&db=' + db;
-    }
-</script>
 <div style="margin-top: 5px;margin-bottom: 5px">选择连接：
-    <input type="hidden" id="target" name="target" value="{{target}}"/>
-    <input type="hidden" id="db" name="db" value="{{db}}"/>
     <select id="collection" name="collection" onchange="changeCollection(this.value)">{% for name in names[::-1] %}
         <option value="{{ name }}">{{ name }}</option>
         {% end %}

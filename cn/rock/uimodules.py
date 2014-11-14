@@ -9,10 +9,10 @@ class Collection(UIModule):
 
 
 class Keys(UIModule):
-    def render(self, keys, target, db):
-        return self.render_string("keys.html", keys=keys, target=target, db=db)
+    def render(self, target, db):
+        return self.render_string("keys.html", target=target, db=db)
 
 
 class Value(UIModule):
-    def render(self, value):
-        return self.render_string("value.html", value=value)
+    def render(self):
+        return self.render_string("value.html")
