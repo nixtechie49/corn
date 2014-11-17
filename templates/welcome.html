@@ -1,24 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="redisExplorer">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>欢迎</title>
-    <script src="/static/js/jquery-2.1.1.min.js"></script>
-    <script src="/static/js/jquery.quicksearch.js"></script>
-    <script src="/static/js/corn.js"></script>
+    <title>Redis-Explorer</title>
+    <script src="/static/js/angular.js"></script>
+    <script src="/static/js/corn_controllers.js"></script>
     <link href="/static/css/corn.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 <div id="collection">
-    {% module Collection(names,target,db) %}
+
 </div>
-<div id="key" style="width:240px;height:600px;float:left;overflow-x: hidden;overflow-y:scroll">
-    {% module Keys(target,db) %}
+<div id="key" style="width:240px;height:600px;float:left;overflow-x: hidden;overflow-y:scroll"
+     ng-controller="keyController">
+    <div ng-include="'/static/views/keys.html'"></div>
 </div>
 <div id="value" style="float:left">
-    {% module Value() %}
 </div>
-<input type="hidden" id="hiddenCol" value="{{target}}"/>
-<input type="hidden" id="hiddenDB" value="{{db}}"/>
 </body>
 </html>

@@ -7,19 +7,18 @@ import tornado.web
 
 from cn.rock import web
 from cn.rock import constants
-from cn.rock import uimodules
 
 
 PORT = 7878
 settings = {'debug': True,
             'static_path': constants.STATIC_DIR_PATH,
             'template_path': constants.TEMPLATE_DIR_PATH,
-            'ui_modules': uimodules,
 }
 
 application = tornado.web.Application([
                                           (r"/", web.HomeHandler),
                                           (r"/collection/", web.CollectionHandler),
+                                          (r"/key/", web.KeyHandler),
                                           (r"/value/", web.ValueHandler),
                                       ], **settings)
 
