@@ -57,22 +57,21 @@ def getRedis(name, db='0'):
     return redis.Redis(connection_pool=pool)
 
 
-def getValue(key, r):
-    type = r.type(key)
-    print(type)
+def getTypeAndValue(key, r):
+    t = r.type(key)
     value = ''
     # TODO 分页
-    if type == b'hash':
+    if t == b'hash':
         value = r.hgetall(key)
-    elif type == b'string':
+    elif t == b'string':
         value = r.get(key).decode(constants.CHARSET)
-    elif type == b'list':
+    elif t == b'list':
         value = r.lrange(key, 0, -1)
-    elif type == b'set':
+    elif t == b'set':
         value = r.smembers(key)
-    elif type == b'zset':
+    elif t == b'zset':
         value = r.zrange(key, 0, -1)
-    return value
+    return t, value
 
 
 
