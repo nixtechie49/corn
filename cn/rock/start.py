@@ -5,7 +5,7 @@ import sys
 import tornado.ioloop
 import tornado.web
 
-from cn.rock import web
+from cn.rock import controller
 from cn.rock import constants
 
 
@@ -16,10 +16,10 @@ settings = {'debug': True,
 }
 
 application = tornado.web.Application([
-                                          (r"/", web.HomeHandler),
-                                          (r"/collection/", web.CollectionHandler),
-                                          (r"/key/", web.KeyHandler),
-                                          (r"/value/", web.ValueHandler),
+                                          (r"/", controller.HomeHandler),
+                                          (r"/collection/", controller.CollectionHandler),
+                                          (r"/key/", controller.KeyHandler),
+                                          (r"/value/", controller.ValueHandler),
                                       ], **settings)
 
 from cn.rock import collection

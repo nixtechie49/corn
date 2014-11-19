@@ -1,17 +1,22 @@
 __author__ = 'rock'
 
+from abc import abstractmethod
 import json
 import logging
 
 import constants
 
 
-class DictCode():
-    def __init__(self):
-        self.__init__()
-
+class ValueParser(object):
     @staticmethod
-    def do(value=None):
+    @abstractmethod
+    def parse(value=None):
+        pass
+
+
+class DictCode(ValueParser):
+    @staticmethod
+    def parse(value=None):
         logging.debug('org value is ' + str(type(value)))
         if value:
             value = json.loads(value, encoding=constants.CHARSET)
@@ -19,7 +24,6 @@ class DictCode():
             value = 'value is nil'
         logging.debug('parse value is ' + str(type(value)))
         return value
-
 
 # MAP = {}
 MAP = {ur'(DICT_CODE_\d)': DictCode()}

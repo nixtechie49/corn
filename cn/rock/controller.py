@@ -53,7 +53,6 @@ class KeyHandler(tornado.web.RequestHandler):
         logging.debug('db is ' + db)
         r = collection.get_redis(target, db)
         keys = r.keys()
-        logging.error('redis connection error')
         data = json.dumps(keys, ensure_ascii=False)
         logging.debug('response data is : ' + str(data))
         self.write(data)
@@ -73,9 +72,9 @@ class ValueHandler(tornado.web.RequestHandler):
         if name and key:
             r = collection.get_redis(name, db)
             t, v = collection.get_type_and_value(key, r)
-        for (regex, h) in parsermap.MAP.items():
+        for (regex, p) in parsermap.MAP.items():
             if re.match(regex, key):
-                v = h.do(v)
+                v = p.parse(v)
         result['type'] = t
         result['value'] = v
         self.write(result)

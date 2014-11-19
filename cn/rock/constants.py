@@ -16,4 +16,4 @@ CURRENT_REDIS = None
 CURRENT_DB = 0
 CHARSET = 'utf-8'
 
-LOG_FORMAT = '[%(asctime)s]-[%(levelname)s]-[%(thread)d]=[%(threadName)s] : %(message)s [from %(filename)s|%(module)s|%(funcName)s]'
+LOG_FORMAT = "[%(asctime)s]-[%(levelname)s] : %(message)s [from %(module)s.%(funcName)s.%(lineno)d]"
