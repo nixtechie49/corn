@@ -9,15 +9,15 @@ from cn.rock import constants
 
 
 try:
-    import xml.etree.cElementTree as ET
+    import xml.etree.cElementTree as XMLParser
 except ImportError:
-    import xml.etree.ElementTree as ET
+    import xml.etree.ElementTree as XMLParser
 
 
 def load_collection_config():
     """加载Collection.xml配置文件
     """
-    doc = ET.ElementTree(file=os.path.join(constants.CONFIG_DIR_PATH, 'collections.xml'))
+    doc = XMLParser.ElementTree(file=os.path.join(constants.CONFIG_DIR_PATH, 'collections.xml'))
     root = doc.getroot()
     constants.REDIS_CONFIG = {}
     for col in root:
@@ -36,7 +36,7 @@ def save_config(name, prop):
     db = '0'
     if 'db' in prop:
         db = prop['db']
-    time = 5000
+    time = constants.DEFAULT_TIME
     if 'timeout' in prop:
         time = prop['timeout']
     col = {'ip': ip, 'port': port, 'db': db, 'time': time}

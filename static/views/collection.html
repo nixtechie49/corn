@@ -1,6 +1,5 @@
 选择连接：
-<select ng-model="collection" ng-change="change(collection,db)" ng-options="c for c in collections">
-</select>
+<select ng-model="collection" ng-change="change(collection,db)" ng-options="c for c in collections"></select>
 &nbsp;&nbsp;&nbsp;&nbsp;选择库：
-<select ng-model="db" ng-change="change(collection,db)" ng-options="d for d in dbs">
-</select>
+<select ng-model="db" ng-change="change(collection,db)" ng-options="d for d in dbs"></select>
+<button name="new" ng-click="redirect('/input/')"> 新建连接</button>

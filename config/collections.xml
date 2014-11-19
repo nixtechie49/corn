@@ -10,4 +10,9 @@
         <port>6380</port>
         <db>0</db>
     </conllection>
+    <conllection name="fack_connection">
+        <ip>10.10.1.1</ip>
+        <port>6380</port>
+        <db>0</db>
+    </conllection>
 </conllections>
