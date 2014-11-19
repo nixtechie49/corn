@@ -1,10 +1,12 @@
 # encoding:utf-8
+
 __author__ = 'rock'
 import re
 import logging
 import json
 
 import tornado.web
+from redis import ConnectionError
 
 from cn.rock import constants, collection, parsermap
 
@@ -51,7 +53,10 @@ class KeyHandler(tornado.web.RequestHandler):
         db = self.get_argument('db', None)
         logging.debug('db is ' + db)
         r = collection.getRedis(target, db)
-        keys = r.keys()
+        try:
+            keys = r.keys()
+        except ConnectionError:
+            logging.error('redis connection error')
         data = json.dumps(keys, ensure_ascii=False)
         logging.debug('response data is : ' + str(data))
         self.write(data)

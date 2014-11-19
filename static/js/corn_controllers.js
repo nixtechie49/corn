@@ -41,7 +41,8 @@ redisExplorer.controller('keyCtrl', function keyCtrl($scope, $http) {
 redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
     $scope.$on('valueNotice', function (event, key, col, db) {
         $http.get("/value/", {params: {key: key, col: col, db: db} }).success(function (response) {
-            $scope.value = response;
+            $scope.type = response['type'];
+            $scope.value = response['value'];
         });
     });
 });

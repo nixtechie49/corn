@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <title>Redis-Explorer</title>
     <script src="/static/js/angular.js"></script>
-    <script src="/static/js/corn_controllers.js"></script>
-    <link href="/static/css/corn.css" type="text/css" rel="stylesheet">
 </head>
 <body ng-controller="parentCtr">
-<div ng-controller="colCtrl">
-    <div ng-include="'/static/views/collection.html'"></div>
-</div>
-<div ng-controller="keyCtrl" style="width:240px;height:600px;float:left;overflow-x: hidden;overflow-y:scroll">
-<div ng-include="'/static/views/keys.html'"></div>
-</div>
-<div style="float:left" ng-controller="valueCtrl">
-    <div ng-include="'/static/views/value.html'"></div>
-</div>
+<div class="topBlock" ng-controller="colCtrl" ng-include="'/static/views/collection.html'"></div>
+<div class="leftBlock" ng-controller="keyCtrl" ng-include="'/static/views/keys.html'"></div>
+<div class="rightBlock" ng-controller="valueCtrl" ng-include="'/static/views/value.html'"></div>
+<script src="/static/js/corn_controllers.js"></script>
+<link href="/static/css/corn.css" type="text/css" rel="stylesheet">
 </body>
 </html>

@@ -1,17 +1,7 @@
 <?xml version="1.0"?>
 <conllections>
-    <conllection name="sc0">
-        <ip>192.168.213.113</ip>
-        <port>7379</port>
-        <db>0</db>
-    </conllection>
-    <conllection name="sc1">
-        <ip>192.168.213.113</ip>
-        <port>7379</port>
-        <db>1</db>
-    </conllection>
     <conllection name="card_test">
-        <ip>192.168.214.164</ip>
+        <ip>172.24.7.74</ip>
         <port>6379</port>
         <db>0</db>
     </conllection>

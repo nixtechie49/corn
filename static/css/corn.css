@@ -3,11 +3,15 @@
     padding: 0;
 }
 
-body {
-    margin: 5;
-    padding: 5;
-    width: 100%;
+html, body {
+    margin: 0;
+    padding: 0;
     height: 100%;
+}
+
+div {
+
+    display: inherit;
 }
 
 ul {
@@ -23,12 +27,60 @@ li {
 a {
     text-decoration: blink;
     font-size: small;
-    color: black;
+    color: #222222;
 }
 
 a:hover {
     text-decoration: underline;
     font-size: medium;
-    color: red;
+    color: black;
     cursor: hand;
+    z-index: 10;
+}
+
+.topBlock {
+    height: 5%;
+}
+
+.leftBlock {
+    height: 95%;
+    width: 19%;
+    float: left;
+}
+
+.rightBlock {
+    height: 95%;
+    width: 81%;
+    float: right;
+}
+
+.keyBox {
+    height: 95%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.valueBox {
+    height: 70%;
+    width: 100%;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+.searchBox {
+    height: 5%;
+    width: 100%;
+}
+
+.queryBox {
+    height: 25%;
+    width: 100%;
+    color: white;
+}
+
+.toolBox {
+    height: 5%;
+    width: 100%;
+    color: white;
 }
