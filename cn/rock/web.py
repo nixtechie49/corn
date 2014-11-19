@@ -6,7 +6,6 @@ import logging
 import json
 
 import tornado.web
-from redis import ConnectionError
 
 from cn.rock import constants, collection, parsermap
 
@@ -28,13 +27,13 @@ class CollectionHandler(tornado.web.RequestHandler):
     def post(self):
         target = self.get_argument('target', None)
         db = self.get_argument('db', None)
+        result = {}
         collections = list(constants.REDIS_CONFIG.keys())
         dbs = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15')
         if not target:
             target = collections[0]
         if not db:
             db = constants.REDIS_CONFIG[target]['db']
-        result = {}
         result['collections'] = collections
         result['dbs'] = dbs
         result['currentCol'] = target
@@ -52,11 +51,9 @@ class KeyHandler(tornado.web.RequestHandler):
         logging.debug('target is ' + target)
         db = self.get_argument('db', None)
         logging.debug('db is ' + db)
-        r = collection.getRedis(target, db)
-        try:
-            keys = r.keys()
-        except ConnectionError:
-            logging.error('redis connection error')
+        r = collection.get_redis(target, db)
+        keys = r.keys()
+        logging.error('redis connection error')
         data = json.dumps(keys, ensure_ascii=False)
         logging.debug('response data is : ' + str(data))
         self.write(data)
@@ -74,8 +71,8 @@ class ValueHandler(tornado.web.RequestHandler):
         t = 'string'
         v = ''
         if name and key:
-            r = collection.getRedis(name, db)
-            t, v = collection.getTypeAndValue(key, r)
+            r = collection.get_redis(name, db)
+            t, v = collection.get_type_and_value(key, r)
         for (regex, h) in parsermap.MAP.items():
             if re.match(regex, key):
                 v = h.do(v)

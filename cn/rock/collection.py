@@ -14,36 +14,36 @@ except ImportError:
     import xml.etree.ElementTree as ET
 
 
-def loadConllectionsConfig():
-    """加载Conllection.xml配置文件
+def load_collection_config():
+    """加载Collection.xml配置文件
     """
     doc = ET.ElementTree(file=os.path.join(constants.CONFIG_DIR_PATH, 'collections.xml'))
     root = doc.getroot()
     constants.REDIS_CONFIG = {}
     for col in root:
         name = col.attrib['name']
-        property = {}
+        prop = {}
         for sub in col:
-            property[sub.tag] = sub.text
-        saveconfig(name, property)
+            prop[sub.tag] = sub.text
+        save_config(name, prop)
 
 
-def saveconfig(name, property):
+def save_config(name, prop):
     """将collection.xml保存为dict
     """
-    ip = property['ip']
-    port = property['port']
+    ip = prop['ip']
+    port = prop['port']
     db = '0'
-    if property.has_key('db'):
-        db = property['db']
+    if 'db' in prop:
+        db = prop['db']
     time = 5000
-    if property.has_key('timeout'):
-        time = property['timeout']
+    if 'timeout' in prop:
+        time = prop['timeout']
     col = {'ip': ip, 'port': port, 'db': db, 'time': time}
     constants.REDIS_CONFIG[name] = col
 
 
-def getPool(name, db):
+def get_pool(name, db):
     location = constants.REDIS_CONFIG[name]
     key = name + '_' + db
     if not constants.REDIS_POOL.get(key):
@@ -52,12 +52,12 @@ def getPool(name, db):
     return constants.REDIS_POOL[key]
 
 
-def getRedis(name, db='0'):
-    pool = getPool(name, db)
+def get_redis(name, db='0'):
+    pool = get_pool(name, db)
     return redis.Redis(connection_pool=pool)
 
 
-def getTypeAndValue(key, r):
+def get_type_and_value(key, r):
     t = r.type(key)
     value = ''
     # TODO 分页
