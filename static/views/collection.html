@@ -8,7 +8,7 @@
         <label for="chooseCollection" class="control-label">选择连接：</label>
         <select class="form-control input-sm" id="chooseCollection" ng-model="collection"
                 ng-change="change(collection,db)" ng-options="c for c in collections"></select>
-        <label for="chooseDB" class="control-label">选择库：</label>
+        <label style="margin-left: 20px;" for="chooseDB" class="control-label">选择库：</label>
         <select class="form-control input-sm" id="chooseDB" ng-model="db" ng-change="change(collection,db)"
                 ng-options="d for d in dbs"></select>
         <button name="new" class="btn btn-primary" ng-click="redirect('/input/')">新建连接</button>

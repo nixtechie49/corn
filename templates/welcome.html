@@ -12,16 +12,13 @@
     </style>
 </head>
 <body class="container-fluid fill" ng-controller="parentCtr">
-<div class="row main_up">
-    <div class="col-md-12 fill" ng-controller="colCtrl" ng-include="'/static/views/collection.html'"></div>
-</div>
-<div class="row main_down border" style="height: 100%">
+<nav class="navbar navbar-fixed-top">
+  <div class="col-md-12 main_up fill" ng-controller="colCtrl" ng-include="'/static/views/collection.html'"></div>
+</nav>
+<div class="row main_down">
     <div class="col-md-2 fill" ng-controller="keyCtrl" ng-include="'/static/views/keys.html'"></div>
     <div class="col-md-10 fill" ng-controller="valueCtrl" ng-include="'/static/views/value.html'"></div>
 </div>
-<!--<div class="topBlock" ng-controller="colCtrl" ng-include="'/static/views/collection.html'"></div>-->
-<!--<div class="leftBlock" ng-controller="keyCtrl" ng-include="'/static/views/keys.html'"></div>-->
-<!--<div class="rightBlock" ng-controller="valueCtrl" ng-include="'/static/views/value.html'"></div>-->
 <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 <link href="/static/css/corn.css" type="text/css" rel="stylesheet">
 <script src="/static/js/angular.js"></script>
