@@ -1,10 +1,12 @@
-<div class="searchBox">
-    Search:<input type="text" ng-model="k"/>
+<div class="row left_up">
+    <div class="col-md-12 fill">
+        <input class="form-control input-sm" placeholder="Search" type="text" ng-model="k"/>
+    </div>
 </div>
-<div class="keyBox">
-    <ul>
-        <li ng-repeat="k in keys|filter:k|orderBy:k">
-            <a href="javascript:void(0)" ng-click="click(k)">{{ k }}</a>
-        </li>
-    </ul>
+<div class="row left_down">
+    <div class="col-md-12 fill" style="overflow-y: auto;overflow-x: hidden;">
+        <p ng-repeat="k in keys|filter:k|orderBy:k">
+        <a href="javascript:void(0)" ng-click="click(k)">{{ k }}</a>
+        </p>
+    </div>
 </div>

@@ -68,7 +68,7 @@ def get_type_and_value(key, r):
     elif t == b'list':
         value = r.lrange(key, 0, -1)
     elif t == b'set':
-        value = r.smembers(key)
+        value = list(r.smembers(key))
     elif t == b'zset':
         value = r.zrange(key, 0, -1)
     return t, value

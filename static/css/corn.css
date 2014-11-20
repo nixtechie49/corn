@@ -1,86 +1,46 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
 html, body {
-    margin: 0;
-    padding: 0;
     height: 100%;
 }
 
-div {
-
-    display: inherit;
+.fill {
+    height: 100%;
 }
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.main_up {
+    height: 15%;
 }
 
-li {
-    margin-top: 3px;
+.main_down {
+    width: 100%;
+    height: 85%;
+    background-position: center;
+    background-size: cover;
 }
 
-a {
-    text-decoration: blink;
-    font-size: small;
-    color: #222222;
+.title_up {
+    height: 66%;
 }
 
-a:hover {
-    text-decoration: underline;
-    font-size: medium;
-    color: black;
-    cursor: hand;
-    z-index: 10;
+.title_down {
+    height: 34%;
 }
 
-.topBlock {
+.left_up {
     height: 5%;
 }
 
-.leftBlock {
+.left_down {
     height: 95%;
-    width: 19%;
-    float: left;
 }
 
-.rightBlock {
-    height: 95%;
-    width: 81%;
-    float: right;
-}
-
-.keyBox {
-    height: 95%;
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.valueBox {
-    height: 70%;
-    width: 100%;
-    overflow: hidden;
-    word-break: break-all;
-}
-
-.searchBox {
+.right_up {
     height: 5%;
-    width: 100%;
 }
 
-.queryBox {
-    height: 25%;
-    width: 100%;
-    color: white;
+.right_middle {
+    height: 60%;
 }
 
-.toolBox {
-    height: 5%;
-    width: 100%;
-    color: white;
+.right_down {
+    height: 35%;
 }

@@ -1,5 +1,5 @@
 # encoding:utf-8
-from redis import ConnectionError
+from redis import ConnectionError, TimeoutError
 
 __author__ = 'rock'
 import re
@@ -62,14 +62,21 @@ class KeyHandler(tornado.web.RequestHandler):
             keys = r.keys()
             result['success'] = True
         except ConnectionError, e:
-            logging.error('redis connection error.' + e.message)
             result['success'] = False
             result['msg'] = u'redis connection error.'
+            logging.error(result['msg'] + e.message)
+        except TimeoutError, e:
+            result['success'] = False
+            result['msg'] = u'redis connection timeout.'
+            logging.error(result['msg'] + e.message)
         # print(r.execute_command('keys', '*'))
         # data = json.dumps(keys, ensure_ascii=False)
         result['keys'] = keys
         logging.debug('response data is : ' + str(result))
-        self.finish(result)
+        try:
+            self.finish(result)
+        except UnicodeDecodeError, e:
+            logging.error('get redis key error:' + e.message)
 
 
 class ValueHandler(tornado.web.RequestHandler):
@@ -97,6 +104,7 @@ class ValueHandler(tornado.web.RequestHandler):
             result['msg'] = 'get value error'
         result['type'] = t
         result['value'] = v
+        logging.debug('key:' + key + ' type:' + t + ' value:' + str(v))
         self.finish(result)
 
 
