@@ -70,7 +70,7 @@ def get_type_and_value(key, r):
     elif t == b'set':
         value = list(r.smembers(key))
     elif t == b'zset':
-        value = r.zrange(key, 0, -1)
+        value = r.zrange(key, 0, -1, withscores=True)
     return t, value
 
 

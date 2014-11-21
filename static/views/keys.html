@@ -1,13 +1,13 @@
 <div class="row left_up">
-    <div class="col-md-12 fill">
-        <input class="form-control input-sm" placeholder="Search" type="text" ng-model="k"/>
+    <div class="col-md-12 fill_height">
+    <input class="form-control input-sm" placeholder="Search" type="text" ng-model="k"/>
     </div>
 </div>
 <div class="row left_down">
-    <div class="col-md-12 fill" style="overflow-y: auto;overflow-x: hidden;">
-        <p ng-repeat="k in keys|filter:k|orderBy:k">
-            <abbr style="border-bottom: none" title="{{ k }}">
-                <a href="javascript:void(0)" ng-click="click(k)">{{ k }}</a>
+    <div class="col-md-12 fill_height" style="overflow-y: auto;overflow-x: hidden;">
+        <p style="line-height: 1.1" ng-repeat="k in keys|filter:k|orderBy:k">
+            <abbr style="border-bottom: none;" title="{{ k }}">
+            <a href="javascript:void(0)" ng-click="click(k)">{{ k }}</a>
             </abbr>
         </p>
     </div>

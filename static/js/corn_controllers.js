@@ -55,8 +55,23 @@ redisExplorer.controller('keyCtrl', function keyCtrl($scope, $http) {
 redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
     $scope.$on('valueNotice', function (event, key, col, db) {
         $http.get("/value/", {params: {key: key, col: col, db: db} }).success(function (response) {
-            $scope.value = response['value'];
             $scope.type = response['type'];
+            $scope.hash = undefined;
+            $scope.zset = undefined;
+            $scope.list = undefined;
+            $scope.set = undefined;
+            $scope.string = undefined;
+            if ($scope.type == 'hash') {
+                $scope.hash = response['value'];
+            } else if ($scope.type == 'zset') {
+                $scope.zset = response['value'];
+            } else if ($scope.type == 'list') {
+                $scope.list = response['value'];
+            } else if ($scope.type == 'set') {
+                $scope.set = response['value'];
+            } else {
+                $scope.string = response['value'];
+            }
             if (!response['success']) {
                 alert(response['msg']);
             }

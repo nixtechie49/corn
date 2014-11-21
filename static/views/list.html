@@ -1,0 +1,14 @@
+<table class="table table-responsive table-bordered" style="display: block">
+    <thead>
+    <tr>
+        <td>NO.</td>
+        <td>VALUE</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="v in list track by $index">
+        <td style="min-width: 20px" ng-bind="$index+1">1</td>
+        <td>{{v}}</td>
+    </tr>
+    </tbody>
+</table>

@@ -2,12 +2,15 @@ html, body {
     height: 100%;
 }
 
-a:hover{
-    color: #a94442;
+a:hover {
     font-size: medium;
 }
 
-.fill {
+.fill-width {
+    width: 100%;
+}
+
+.fill_height {
     height: 100%;
 }
 
@@ -31,9 +34,8 @@ a:hover{
 
 .left_up {
     height: 32px;
-    width:160px;
+    min-width: 160px;
     position: absolute;
-    z-index: 1;
 }
 
 .left_down {
@@ -42,25 +44,38 @@ a:hover{
 }
 
 .right_up {
-    height: 32px;
-    width: 816px;
-    position: absolute;
-    z-index: 1;
     color: #ffffff;
+    position: absolute; /*公共*/
+    top: 0px;
+    width: 100%;
+    height: 32px;
 }
 
 .right_middle {
-    height: 75%;
-    padding-top: 40px;
+    position: absolute; /*FF IE7 SF*/
+    top: 32px;
+    bottom: 200px;
+    _position: relative; /**IE6***/
+    _top: 0px;
     overflow-x: hidden;
     overflow-y: auto;
+    _height: 100%;
 }
 
 .right_down {
-    height: 25%;
+    position: absolute; /*公共*/
+    bottom: 0;
+    width: 100%;
+    height: 189px;
 }
 
 .no_maring_padding {
     padding: 0;
     margin: 0;
+}
+
+.border {
+    border-color: #000000;
+    border-style: solid;
+    border-width: thin;
 }
