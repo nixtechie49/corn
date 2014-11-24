@@ -1,12 +1,15 @@
 <div class="row right_up">
     <div class="col-md-12 fill_height">
-    这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里
+        这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里是工具栏这里
     </div>
 </div>
-<div class="row right_middle">
+<div class="row right_middle fill-width">
     <div class="col-md-12 fill_height">
-        <div class="row">
-            <div style="width:100%">数据类型:&nbsp;{{type}}</div>
+        <div class="row fill-width">
+            <div class="col-xs-2">数据类型:&nbsp;{{type}}</div>
+            <div class="col-xs-10" style="text-align: right">
+                <input ng-click="del(key,col,db)" type="button" class="btn btn-danger" value="删除"/>
+            </div>
         </div>
         <div class="row" style="word-break: break-all">
             <div ng-show="hash" ng-include="'/static/views/hash.html'"></div>
@@ -20,7 +23,7 @@
 <div class="row right_down">
     <div class="panel panel-primary no_maring_padding">
         <div class="panel-heading">
-            Edit
+            Command
         </div>
         <div class="panel-body"><textarea class="form-control fill_height" rows="5" style="resize: none"></textarea>
         </div>

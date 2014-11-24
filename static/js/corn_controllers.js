@@ -49,18 +49,23 @@ redisExplorer.controller('keyCtrl', function keyCtrl($scope, $http) {
     $scope.click = function (key) {
         $scope.$emit('valueObserver', key, $scope.collection, $scope.db);
     }
+    $scope.mutilDel = function () {
+        alert('待实现');
+    }
+    $scope.adDel = function () {
+        alert('待实现');
+    }
 })
 ;
 
 redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
     $scope.$on('valueNotice', function (event, key, col, db) {
         $http.get("/value/", {params: {key: key, col: col, db: db} }).success(function (response) {
+            clearValuePage($scope);
             $scope.type = response['type'];
-            $scope.hash = undefined;
-            $scope.zset = undefined;
-            $scope.list = undefined;
-            $scope.set = undefined;
-            $scope.string = undefined;
+            $scope.key = response['key'];
+            $scope.col = col;
+            $scope.db = db;
             if ($scope.type == 'hash') {
                 $scope.hash = response['value'];
             } else if ($scope.type == 'zset') {
@@ -79,4 +84,36 @@ redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
             alert('服务端未知错误.');
         });
     });
+    $scope.del = function (key, col, db) {
+        if (key == undefined) {
+            alert('请选择要删除的键');
+            return;
+        }
+        var c = confirm('确认删除:  ' + key + '  ?');
+        if (c) {
+            $http.delete("/delete/", {params: {key: key, col: col, db: db} }).success(function (response) {
+                clearValuePage($scope);
+                if (response['success']) {
+                    alert('删除成功');
+                    $scope.$emit('collectionObserver', col, db);
+                } else {
+                    alert(response['msg']);
+                }
+            }).error(function () {
+                alert('服务端未知错误.');
+            });
+        }
+    }
 });
+
+function clearValuePage(page) {
+    page.hash = undefined;
+    page.zset = undefined;
+    page.list = undefined;
+    page.set = undefined;
+    page.string = undefined;
+    page.type = undefined;
+    page.key = undefined;
+    page.col = undefined;
+    page.db = undefined;
+}

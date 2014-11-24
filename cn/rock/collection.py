@@ -74,4 +74,11 @@ def get_type_and_value(key, r):
     return t, value
 
 
+def delete(r, key):
+    flag = 1
+    if isinstance(key, tuple):
+        flag = len(key)
+    result = r.delete(key)
+    return flag == result
+
 

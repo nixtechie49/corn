@@ -88,7 +88,7 @@ class ValueHandler(tornado.web.RequestHandler):
         name = self.get_argument('col')
         db = self.get_argument('db')
         result = {}
-        t = 'string'
+        t = u'string'
         v = ''
         try:
             if name and key:
@@ -102,9 +102,36 @@ class ValueHandler(tornado.web.RequestHandler):
             logging.error('get value error' + e.message)
             result['success'] = False
             result['msg'] = 'get value error'
+        result['key'] = key
         result['type'] = t
         result['value'] = v
         logging.debug('key:' + key + ' type:' + t + ' value:' + str(v))
+        self.finish(result)
+
+
+class DeleteHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.delete()
+
+    def post(self):
+        self.delete()
+
+    def delete(self):
+        result = {}
+        key = self.get_argument('key')
+        name = self.get_argument('col')
+        db = self.get_argument('db')
+        result['type'] = u'string'
+        try:
+            if name and key:
+                r = collection.get_redis(name, db)
+                res = collection.delete(r, key)
+                logging.debug(res)
+            result['success'] = res
+        except Exception, e:
+            logging.error('delete error' + e.message)
+            result['success'] = False
+            result['msg'] = 'delete error'
         self.finish(result)
 
 
