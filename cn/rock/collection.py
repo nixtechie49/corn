@@ -82,3 +82,7 @@ def delete(r, key):
     return flag == result
 
 
+def execute_command(r, command):
+    return r.execute_command(command)
+
+

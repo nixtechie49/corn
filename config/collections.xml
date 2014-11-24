@@ -10,9 +10,9 @@
         <port>6380</port>
         <db>0</db>
     </conllection>
-    <!--<conllection name="home_ubuntu">-->
-    <!--<ip>10.1.1.201</ip>-->
-    <!--<port>7379</port>-->
-    <!--<db>0</db>-->
-    <!--</conllection>-->
+    <conllection name="home_ubuntu">
+        <ip>10.1.1.201</ip>
+        <port>7379</port>
+        <db>0</db>
+    </conllection>
 </conllections>

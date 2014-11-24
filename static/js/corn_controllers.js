@@ -33,7 +33,7 @@ redisExplorer.controller('colCtrl', function colCtrl($scope, $http, $window) {
 
 redisExplorer.controller('keyCtrl', function keyCtrl($scope, $http) {
     $scope.$on('collectionNotice', function (event, col, db) {
-        $http.get("/key/", {params: {target: col, db: db} }).success(function (response) {
+        $http.get("/key/", {params: {target: col, db: db}}).success(function (response) {
             if (response['success']) {
                 $scope.collection = col;
                 $scope.db = db;
@@ -60,7 +60,7 @@ redisExplorer.controller('keyCtrl', function keyCtrl($scope, $http) {
 
 redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
     $scope.$on('valueNotice', function (event, key, col, db) {
-        $http.get("/value/", {params: {key: key, col: col, db: db} }).success(function (response) {
+        $http.get("/value/", {params: {key: key, col: col, db: db}}).success(function (response) {
             clearValuePage($scope);
             $scope.type = response['type'];
             $scope.key = response['key'];
@@ -91,7 +91,7 @@ redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
         }
         var c = confirm('确认删除:  ' + key + '  ?');
         if (c) {
-            $http.delete("/delete/", {params: {key: key, col: col, db: db} }).success(function (response) {
+            $http.delete("/value/", {params: {key: key, col: col, db: db}}).success(function (response) {
                 clearValuePage($scope);
                 if (response['success']) {
                     alert('删除成功');
@@ -103,6 +103,20 @@ redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
                 alert('服务端未知错误.');
             });
         }
+    }
+    $scope.command = '';
+    $scope.execute_command = function (command, col, db) {
+        alert(command);
+        $http({
+            method: 'POST',
+            url: "/command/",
+            data: {command: command, col: col, db: db},
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        }).success(function (response) {
+            alert(response);
+        });
     }
 });
 

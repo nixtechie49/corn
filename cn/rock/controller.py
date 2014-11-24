@@ -1,6 +1,4 @@
 # encoding:utf-8
-from redis import ConnectionError, TimeoutError
-
 __author__ = 'rock'
 import re
 import logging
@@ -8,13 +6,11 @@ import logging
 import tornado.web
 
 from cn.rock import constants, collection, parsermap
+from redis import ConnectionError, TimeoutError
 
 
 class HomeHandler(tornado.web.RequestHandler):
     def get(self):
-        self.post()
-
-    def post(self):
         if len(constants.REDIS_CONFIG) < 1:
             logging.debug('collection number ' + str(len(constants.REDIS_CONFIG)))
             self.redirect('/input/')
@@ -24,9 +20,6 @@ class HomeHandler(tornado.web.RequestHandler):
 
 class CollectionHandler(tornado.web.RequestHandler):
     def get(self):
-        self.post()
-
-    def post(self):
         result = {}
         target = self.get_argument('target', None)
         db = self.get_argument('db', None)
@@ -48,9 +41,6 @@ class CollectionHandler(tornado.web.RequestHandler):
 
 class KeyHandler(tornado.web.RequestHandler):
     def get(self):
-        self.post()
-
-    def post(self):
         result = {}
         target = self.get_argument('target', None)
         logging.debug('target is ' + target)
@@ -81,18 +71,15 @@ class KeyHandler(tornado.web.RequestHandler):
 
 class ValueHandler(tornado.web.RequestHandler):
     def get(self):
-        self.post()
-
-    def post(self):
         key = self.get_argument('key')
-        name = self.get_argument('col')
+        target = self.get_argument('col')
         db = self.get_argument('db')
         result = {}
         t = u'string'
-        v = ''
+        v = u''
         try:
-            if name and key:
-                r = collection.get_redis(name, db)
+            if target and key:
+                r = collection.get_redis(target, db)
                 t, v = collection.get_type_and_value(key, r)
             for (regex, p) in parsermap.MAP.items():
                 if re.match(regex, key):
@@ -108,23 +95,15 @@ class ValueHandler(tornado.web.RequestHandler):
         logging.debug('key:' + key + ' type:' + t + ' value:' + str(v))
         self.finish(result)
 
-
-class DeleteHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.delete()
-
-    def post(self):
-        self.delete()
-
     def delete(self):
         result = {}
         key = self.get_argument('key')
-        name = self.get_argument('col')
+        target = self.get_argument('col')
         db = self.get_argument('db')
         result['type'] = u'string'
         try:
-            if name and key:
-                r = collection.get_redis(name, db)
+            if target and key:
+                r = collection.get_redis(target, db)
                 res = collection.delete(r, key)
                 logging.debug(res)
             result['success'] = res
@@ -141,3 +120,24 @@ class InputHandler(tornado.web.RequestHandler):
 
     def post(self):
         self.render('input.html')
+
+
+class CommandHandler(tornado.web.RequestHandler):
+    def post(self):
+        print(self._headers)
+        result = {}
+        command = self.get_argument('command')
+        target = self.get_argument('col')
+        db = self.get_argument('db')
+        logging.debug('execute : ' + str(command))
+        try:
+            if target and command:
+                r = collection.get_redis(target, db)
+                res = collection.execute_command(r, command)
+                logging.debug(res)
+            result['success'] = res
+        except Exception, e:
+            logging.error('delete error' + e.message)
+            result['success'] = False
+            result['msg'] = 'delete error'
+        self.finish(result)
