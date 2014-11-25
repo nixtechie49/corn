@@ -19,7 +19,7 @@ var CONFIRM_OBSERVER = 'confirmObserver';
 var CONFIRM_NOTICE = 'confirmNotice';
 var NO_COLLECTION_OBSERVER = 'noCollectionObserver';
 
-redisExplorer.controller('parentCtr', function parentCtr($scope) {
+redisExplorer.controller('parentCtr', function parentCtr($scope, $http, $window) {
     $scope.alarm = false;
     $scope.choice = false;
     $scope.noCollection = false;
@@ -57,6 +57,17 @@ redisExplorer.controller('parentCtr', function parentCtr($scope) {
     }
     $scope.closeInput = function () {
         $scope.noCollection = false;
+    }
+    $scope.redis = undefined;
+    $scope.new_redis = function (redis) {
+        $http.post("/collection/", {redis: redis}).success(function (response) {
+            if (response['success']) {
+                $scope.$emit(ALERT_OBSERVER, '添加成功');
+                $scope.closeInput();
+            } else {
+                $scope.$emit(ALERT_OBSERVER, response['msg']);
+            }
+        });
     }
 });
 
@@ -134,7 +145,13 @@ redisExplorer.controller('valueCtrl', function valueCtrl($scope, $http) {
     });
     $scope.$on(CONFIRM_NOTICE, function (event, funcId, choose, key) {
         if (funcId == "confirmDel" && choose) {
-            $http.delete("/value/", {params: {key: key, col: $scope.collection, db: $scope.db}}).success(function (response) {
+            $http.delete("/value/", {
+                params: {
+                    key: key,
+                    col: $scope.collection,
+                    db: $scope.db
+                }
+            }).success(function (response) {
                 resetPage($scope);
                 if (response['success']) {
                     $scope.$emit(ALERT_OBSERVER, '删除成功');

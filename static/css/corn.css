@@ -85,7 +85,7 @@ a:hover {
     left: 0;
     position: absolute;
     background-color: black;
-    z-index: 1032;
+    z-index: 1033;
     opacity: 0.5;
 }
 
@@ -96,14 +96,24 @@ a:hover {
     margin: -170px 0 0 -180px;
     position: absolute;
     top: 50%;
-    z-index: 1033;
+    z-index: 1034;
 }
 
 .input_background {
-    width: 400px;
+    width: 100%;
     position: absolute;
     z-index: 1031;
     background-color: #ffffff;
+    top: 0;
+    left: 0;
+}
+.input_content{
+    width:400px;
+    position:absolute;
+    left: 50%;
+    margin: -170px 0 0 -200px;
+    top: 50%;
+    z-index: 1032;
 }
 
 /*pre {*/

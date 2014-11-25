@@ -40,6 +40,14 @@ class CollectionHandler(tornado.web.RequestHandler):
             result['success'] = True
         self.finish(result)
 
+    def post(self):
+        result = {}
+        args = json.loads(self.request.body)
+        logging.debug('new redis args : ' + str(args))
+        print(args['redis']['ip'])
+        result['success'] = True
+        self.finish(result)
+
 
 class KeyHandler(tornado.web.RequestHandler):
     def get(self):
