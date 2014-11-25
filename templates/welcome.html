@@ -5,6 +5,8 @@
     <title>Redis-Explorer</title>
 </head>
 <body class="container-fluid fill_height" ng-controller="parentCtr">
+<div ng-show="alarm" ng-include="'/static/views/alarm.html'"></div>
+<div ng-show="noCollection" ng-include="'/static/views/input.html'"></div>
 <nav class="navbar navbar-fixed-top">
     <div class="col-md-12 main_up fill_height" ng-controller="colCtrl"
          ng-include="'/static/views/collection.html'"></div>

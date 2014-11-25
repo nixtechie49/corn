@@ -1,8 +1,8 @@
 <div class="row right_up">
     <div class="col-md-12 fill_height btn-group-sm">
-        <input ng-click="del(key,col,db)" type="button" class="btn btn-danger" value="删除"/>
-        <input class="btn btn-warning" name="mutilDel" ng-click="mutilDel()" type="button" value="批量删除"/>
-        <input class="btn btn-warning" name="adDel" ng-click="adDel()" type="button" value="高级删除"/>
+        <input ng-click="del(key)" type="button" class="btn btn-danger" value="删除"/>
+        <input class="btn btn-danger" name="mutilDel" ng-click="mutilDel()" type="button" value="批量删除"/>
+        <input class="btn btn-danger" name="adDel" ng-click="adDel()" type="button" value="高级删除"/>
     </div>
 </div>
 <div class="row right_middle fill-width">
@@ -20,18 +20,20 @@
     </div>
 </div>
 <div class="row right_down">
-    <div class="panel panel-primary no_maring_padding">
+    <div class="panel panel-primary no_margin_padding">
         <div class="panel-heading">
             Command
         </div>
-        <form novalidate ng-submit="execute_command(command,col,db)">
-            <div class="row panel-body">
+        <form novalidate ng-submit="execute_command(command)">
+            <div class="panel-body">
                 <div class="col-xs-11">
                     <textarea class="form-control fill_height" rows="5" ng-model="command"
-                              style="resize: none"></textarea>
+                              style="resize: none;margin-right: 0"></textarea>
                 </div>
-                <div class="col-xs-1 no_maring_padding">
-                    <input type="submit" class="btn btn-primary" style="height: 113px" value="执行"/>
+                <div class="col-xs-1" style="text-align: center">
+                    <button type="submit" class="btn btn-primary fill-width" style="height: 113px;">
+                        <span style="font-size: large">执行</span>
+                    </button>
                 </div>
             </div>
         </form>

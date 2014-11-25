@@ -21,7 +21,6 @@ application = tornado.web.Application([
                                           (r"/key/", controller.KeyHandler),
                                           (r"/value/", controller.ValueHandler),
                                           (r"/command/", controller.CommandHandler),
-                                          (r"/input/", controller.InputHandler),
                                       ], **settings)
 
 from cn.rock import collection

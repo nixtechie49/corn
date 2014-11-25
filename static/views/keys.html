@@ -9,7 +9,9 @@
             <p style="line-height: 1.1;white-space:nowrap;" ng-repeat="k in keys|filter:k|orderBy:k">
                 <input type="checkbox" value="{{ k }}"/>
                 <abbr style="border-bottom: none;" title="{{ k }}">
-                    <a href="javascript:void(0)" ng-click="click(k)">{{ k }}</a>
+                    <a href="javascript:void(0)" ng-show="key!=k" ng-click="click(k)">{{ k }}</a>
+                    <a href="javascript:void(0)" ng-show="key==k" style="background-color: #ddeeff;"
+                       ng-click="click(k)">{{ k }}</a>
                 </abbr>
             </p>
         </form>

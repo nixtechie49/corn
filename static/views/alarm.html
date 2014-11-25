@@ -1,0 +1,28 @@
+<div class="fill-width fill_height alarm_background">
+</div>
+<div class="alarm_content">
+    <div class="panel panel-primary fill_height">
+        <div class="panel-heading" style="height: 40px">
+            <span ng-show="choice==false">通知</span>
+            <span ng-show="choice">确认</span>
+        </div>
+        <div class="panel-body" style="height: 158px;">
+            <table class="fill_height fill-width">
+                <tr class="fill_height">
+                    <td class="fill-width lead" style="text-align: center">
+                        {{msg}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="panel-footer no_margin_padding" style="height: 40px;text-align: center">
+            <input ng-show="choice==false" style="margin-top: 2px" ng-click="close()" class="btn btn-primary"
+                   type="button"
+                   value="确认"/>
+            <input ng-show="choice" style="margin-top: 2px" ng-click="yes()" class="btn btn-primary" type="button"
+                   value="同意"/>
+            <input ng-show="choice" style="margin-top: 2px" ng-click="no()" class="btn btn-primary" type="button"
+                   value="否决"/>
+        </div>
+    </div>
+</div>

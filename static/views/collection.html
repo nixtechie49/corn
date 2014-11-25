@@ -11,7 +11,7 @@
         <label style="margin-left: 20px;" for="chooseDB" class="control-label">选择库：</label>
         <select class="form-control input-sm" id="chooseDB" ng-model="db" ng-change="change(collection,db)"
                 ng-options="d for d in dbs"></select>
-        <button style="margin-left: 10px" name="new" class="btn btn-primary" ng-click="redirect('/input/')">新建连接
+        <button style="margin-left: 10px" name="new" class="btn btn-primary" ng-click="redirect()">新建连接
         </button>
     </div>
 </div>
