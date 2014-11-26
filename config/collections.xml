@@ -1,18 +1,18 @@
-<?xml version="1.0"?>
-<conllections>
-    <conllection name="card_test">
+<collections>
+    <collection name="card_test">
+    <ip>172.24.7.74</ip>
+        <port>6379</port>
+        <db>0</db>
+    </collection>
+    <collection name="banner_test">
+    <ip>10.10.224.80</ip>
+        <port>6380</port>
+        <db>0</db>
+    </collection>
+    <collection name="test">
         <ip>172.24.7.74</ip>
         <port>6379</port>
         <db>0</db>
-    </conllection>
-    <conllection name="banner_test">
-        <ip>10.10.224.80</ip>
-        <port>6380</port>
-        <db>0</db>
-    </conllection>
-    <conllection name="home_ubuntu">
-        <ip>10.1.1.201</ip>
-        <port>7379</port>
-        <db>0</db>
-    </conllection>
-</conllections>
+        <timeout>1</timeout>
+    </collection>
+</collections>

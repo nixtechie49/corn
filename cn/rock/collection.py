@@ -1,4 +1,6 @@
 # encoding:utf-8
+import logging
+
 __author__ = 'rock'
 
 import os
@@ -12,6 +14,36 @@ try:
     import xml.etree.cElementTree as XMLParser
 except ImportError:
     import xml.etree.ElementTree as XMLParser
+
+
+def add_new_collection(redisConfig):
+    if (redisConfig or redisConfig['name'] or redisConfig['ip'] or redisConfig['port']) is None:
+        logging.debug('config illegal')
+        return
+    xmlFile = os.path.join(constants.CONFIG_DIR_PATH, 'collections.xml')
+    logging.debug('add a new collection')
+    doc = XMLParser.ElementTree(file=xmlFile)
+    root = doc.getroot()
+    if 'time' not in redisConfig:
+        redisConfig['time'] = 3
+    if 'db' not in redisConfig:
+        redisConfig['db'] = 0
+    c = XMLParser.Element("collection", {'name': redisConfig['name']})
+    ip = XMLParser.Element('ip')
+    ip.text = redisConfig['ip']
+    c.append(ip)
+    port = XMLParser.Element('port')
+    port.text = redisConfig['port']
+    c.append(port)
+    db = XMLParser.Element('db')
+    db.text = redisConfig['db']
+    c.append(db)
+    time = XMLParser.Element('timeout')
+    time.text = redisConfig['time']
+    c.append(time)
+    root.append(c)
+    logging.debug('new xml is ' + str(root))
+    doc.write(xmlFile, encoding='utf-8')
 
 
 def load_collection_config():
@@ -38,7 +70,7 @@ def save_config(name, prop):
         db = prop['db']
     time = constants.DEFAULT_TIME
     if 'timeout' in prop:
-        time = prop['timeout']
+        time = float(prop['timeout'])
     col = {'ip': ip, 'port': port, 'db': db, 'time': time}
     constants.REDIS_CONFIG[name] = col
 

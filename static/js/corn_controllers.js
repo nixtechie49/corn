@@ -12,6 +12,8 @@ var redisExplorer = angular.module('redisExplorer', []);
 
 var COLLECTION_OBSERVER = 'collectionObserver';
 var COLLECTION_NOTICE = 'collectionNotice';
+var LOAD_COLLECTION_OBSERVER = 'loadCollectionObserver';
+var LOAD_COLLECTION_NOTICE = 'loadCollectionNotice';
 var VALUE_OBSERVER = 'valueObserver';
 var VALUE_NOTICE = 'valueNotice';
 var ALERT_OBSERVER = 'alertObserver';
@@ -58,11 +60,13 @@ redisExplorer.controller('parentCtr', function parentCtr($scope, $http, $window)
     $scope.closeInput = function () {
         $scope.noCollection = false;
     }
+
     $scope.redis = undefined;
     $scope.new_redis = function (redis) {
         $http.post("/collection/", {redis: redis}).success(function (response) {
             if (response['success']) {
                 $scope.$emit(ALERT_OBSERVER, '添加成功');
+                $scope.$broadcast(LOAD_COLLECTION_NOTICE);
                 $scope.closeInput();
             } else {
                 $scope.$emit(ALERT_OBSERVER, response['msg']);
@@ -72,19 +76,9 @@ redisExplorer.controller('parentCtr', function parentCtr($scope, $http, $window)
 });
 
 redisExplorer.controller('colCtrl', function colCtrl($scope, $http) {
-    $http.get("/collection/").success(function (response) {
-        if (response['success']) {
-            $scope.collections = response['collections'];
-            $scope.dbs = response['dbs'];
-            $scope.collection = response['currentCol'];
-            $scope.db = response['currentDB'];
-            $scope.$emit(COLLECTION_OBSERVER, $scope.collection, $scope.db);
-        } else {
-            $scope.$emit(ALERT_OBSERVER, response['msg']);
-            $scope.$emit(NO_COLLECTION_OBSERVER);
-        }
-    }).error(function () {
-        $scope.$emit(ALERT_OBSERVER, '服务端未知错误.');
+    reloadCollection($scope, $http);
+    $scope.$on(LOAD_COLLECTION_NOTICE, function () {
+        reloadCollection($scope, $http);
     });
     $scope.change = function (c, d) {
         $scope.$emit(COLLECTION_OBSERVER, c, d);
@@ -94,15 +88,32 @@ redisExplorer.controller('colCtrl', function colCtrl($scope, $http) {
     }
 });
 
+function reloadCollection(scope, http) {
+    http.get("/collection/").success(function (response) {
+        if (response['success']) {
+            scope.collections = response['collections'];
+            scope.dbs = response['dbs'];
+            scope.collection = response['currentCol'];
+            scope.db = response['currentDB'];
+            scope.$emit(COLLECTION_OBSERVER, scope.collection, scope.db);
+        } else {
+            scope.$emit(ALERT_OBSERVER, response['msg']);
+            scope.$emit(NO_COLLECTION_OBSERVER);
+        }
+    }).error(function () {
+        scope.$emit(ALERT_OBSERVER, '服务端未知错误.');
+    });
+}
+
 redisExplorer.controller('keyCtrl', function keyCtrl($scope, $http) {
     $scope.$on(COLLECTION_NOTICE, function (event, col, db) {
+        $scope.keys = [];
         $http.get("/key/", {params: {target: col, db: db}}).success(function (response) {
             if (response['success']) {
                 $scope.collection = col;
                 $scope.db = db;
                 $scope.keys = response['keys'];
             } else {
-                $scope.keys = [];
                 $scope.$emit(ALERT_OBSERVER, response['msg']);
             }
         }).error(function () {

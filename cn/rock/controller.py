@@ -36,17 +36,19 @@ class CollectionHandler(tornado.web.RequestHandler):
             result['dbs'] = constants.DBS
             result['currentCol'] = target
             result['currentDB'] = db
-            logging.debug('response data is : ' + str(result))
             result['success'] = True
+            logging.debug('response data is : ' + str(result))
         self.finish(result)
 
     def post(self):
         result = {}
         args = json.loads(self.request.body)
         logging.debug('new redis args : ' + str(args))
-        print(args['redis']['ip'])
+        collection.add_new_collection(args['redis'])
         result['success'] = True
         self.finish(result)
+        logging.debug('reload collections')
+        collection.load_collection_config()
 
 
 class KeyHandler(tornado.web.RequestHandler):
