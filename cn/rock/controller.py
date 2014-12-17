@@ -63,21 +63,21 @@ class KeyHandler(tornado.web.RequestHandler):
         try:
             keys = r.keys()
             result['success'] = True
-        except ConnectionError, e:
+        except ConnectionError as e:
             result['success'] = False
             result['msg'] = u'连接Redis服务失败'
             logging.error(result['msg'] + e.message)
-        except TimeoutError, e:
+        except TimeoutError as e:
             result['success'] = False
             result['msg'] = u'连接Redis服务超时'
             logging.error(result['msg'] + e.message)
-        # print(r.execute_command('keys', '*'))
-        # data = json.dumps(keys, ensure_ascii=False)
+        # print(type(keys))
+        # data = json.dumps(keys, ensure_ascii=True)
         result['keys'] = keys
         logging.debug('response data is : ' + str(result))
         try:
             self.finish(result)
-        except UnicodeDecodeError, e:
+        except UnicodeDecodeError as e:
             logging.error('redis键转码失败:' + e.message)
 
 
@@ -97,7 +97,7 @@ class ValueHandler(tornado.web.RequestHandler):
                 if re.match(regex, key):
                     v = p.parse(v)
             result['success'] = True
-        except Exception, e:
+        except Exception as e:
             msg = u'获取键值失败' + e.message
             logging.error(msg)
             result['success'] = False
@@ -105,7 +105,7 @@ class ValueHandler(tornado.web.RequestHandler):
         result['key'] = key
         result['type'] = t
         result['value'] = v
-        logging.debug('key:' + key + ' type:' + t + ' value:' + str(v))
+        # logging.debug('key:' + key + ' type:' + t + ' value:' + str(v))
         self.finish(result)
 
     def delete(self):
@@ -121,7 +121,7 @@ class ValueHandler(tornado.web.RequestHandler):
             result['success'] = res
             if not res:
                 result['msg'] = u'删除失败'
-        except Exception, e:
+        except Exception as e:
             msg = u'删除失败:' + e.message;
             logging.error(msg)
             result['success'] = False
@@ -143,7 +143,7 @@ class CommandHandler(tornado.web.RequestHandler):
                 res = collection.execute_command(r, command)
                 logging.debug('execute command result : ' + str(res))
             result['success'] = res
-        except Exception, e:
+        except Exception as e:
             msg = u'命令执行失败:' + e.message
             logging.error(msg)
             result['success'] = False

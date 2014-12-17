@@ -26,4 +26,4 @@ class DictCode(ValueParser):
         return value
 
 # MAP = {}
-MAP = {ur'(DICT_CODE_\d)': DictCode()}
+MAP = {u'(DICT_CODE_\d)': DictCode()}
