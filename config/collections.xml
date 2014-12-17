@@ -1,18 +1,7 @@
 <collections>
-    <collection name="card_test">
+    <collection name="172.24.7.74">
     <ip>172.24.7.74</ip>
         <port>6379</port>
         <db>0</db>
-    </collection>
-    <collection name="banner_test">
-    <ip>10.10.224.80</ip>
-        <port>6380</port>
-        <db>0</db>
-    </collection>
-    <collection name="test">
-        <ip>172.24.7.74</ip>
-        <port>6379</port>
-        <db>0</db>
-        <timeout>1</timeout>
     </collection>
 </collections>

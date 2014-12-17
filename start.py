@@ -26,7 +26,7 @@ from cn.rock import collection
 import logging
 
 if __name__ == "__main__":
-    logging.basicConfig(format=constants.LOG_FORMAT, datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
+    logging.basicConfig(format=constants.LOG_FORMAT, datefmt='%Y-%m-%d %H:%M:%S', level=logging.ERROR)
     collection.load_collection_config()
     application.listen(PORT)
     tornado.ioloop.IOLoop.instance().start()
