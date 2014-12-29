@@ -105,7 +105,10 @@ class ValueHandler(tornado.web.RequestHandler):
         result['key'] = key
         result['type'] = t
         result['value'] = v
-        # logging.debug('key:' + key + ' type:' + t + ' value:' + str(v))
+        if isinstance(v, str) or isinstance(v, unicode):
+            logging.debug('key:' + key + ' type:' + t + ' value:' + v)
+        else:
+            logging.debug('key:' + key + ' type:' + t + ' value:' + str(v))
         self.finish(result)
 
     def delete(self):
