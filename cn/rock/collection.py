@@ -88,7 +88,6 @@ def get_redis(name, db='0'):
     pool = get_pool(name, db)
     return redis.Redis(connection_pool=pool)
 
-
 def get_type_and_value(key, r):
     t = r.type(key)
     value = ''

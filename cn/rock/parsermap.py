@@ -25,5 +25,6 @@ class DictCode(ValueParser):
         logging.debug('parse value is ' + str(type(value)))
         return value
 
-# MAP = {}
-MAP = {u'(DICT_CODE_\d)': DictCode()}
+
+MAP = {}
+# MAP = {u'(DICT_CODE_\d)': DictCode()}
