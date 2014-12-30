@@ -217,6 +217,18 @@ function resetPage(page) {
     page.key = undefined;
 }
 
+function parseJSON(j) {
+    if (j == undefined || j == null) {
+        return '';
+    }
+    var js = JSON.parse(j);
+    if (js instanceof Object || js instanceof Array) {
+        return parseNode(js, 0);
+    } else {
+        return js.toString();
+    }
+}
+
 function parseNode(js, index) {
     var isArray = js instanceof Array;
     var s = '';
@@ -228,13 +240,8 @@ function parseNode(js, index) {
     for (var i in js) {
         s += formatter(index + 1);
         if (js[i] instanceof Array) {
-            s += (highlight('"' + i + '":') + '[');
-            for (var j in js[i]) {
-                s += formatter(index + 2);
-                s += (highlight(js[i][j]) + '');
-            }
-            s += formatter(index + 1);
-            s += ']';
+            s += (highlight('"' + i + '":'));
+            s += parseNode(js[i], index + 1);
         } else if (js[i] instanceof Object) {
             if (!isArray) {
                 s += highlight('"' + i + '":');
@@ -254,14 +261,6 @@ function parseNode(js, index) {
         s += '}'
     }
     return s;
-}
-
-function parseJSON(j) {
-    if (j == undefined) {
-        return '';
-    }
-    var js = JSON.parse(j);
-    return parseNode(js, 0);
 }
 
 function formatter(index) {
