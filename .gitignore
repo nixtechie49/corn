@@ -1,2 +1,9 @@
 /.idea
 *.iml
+*.db
+venv/
+node_modules/
+static/js/app.js
+将删除 cn/__pycache__/
+将删除 cn/rock/__pycache__/
+将删除 node_modules/
