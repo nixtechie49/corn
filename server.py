@@ -8,7 +8,7 @@ import tornado.web
 import controllers
 
 __author__ = 'rock'
-ROOT_PATH = os.path.join(os.path.dirname(__file__), '../../')
+ROOT_PATH = os.path.join(os.path.dirname(__file__), './')
 
 CONFIG_DIR_PATH = os.path.join(ROOT_PATH, 'config/')
 TEMPLATE_DIR_PATH = os.path.join(ROOT_PATH, 'templates/')
@@ -25,7 +25,7 @@ settings = {'debug': True,
 application = tornado.web.Application(**settings)
 
 application.add_handlers(r".*", [
-    (DOMAIN + r"/", controllers.HomeHandler),
+    (r"/", controllers.HomeHandler),
 ])
 
 LOG_FORMAT = "[%(asctime)s]-[%(levelname)s] : %(message)s [from %(module)s.%(funcName)s.%(lineno)d]"
