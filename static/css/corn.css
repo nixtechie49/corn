@@ -1,3 +1,22 @@
 .popover.top > .arrow:after {
     border-top-color: #d73925;
 }
+
+.key {
+    margin: 0 0 5px 0;
+    padding: 0;
+    color: #b8c7ce;
+    font-size: medium;
+    font-weight: normal;
+    cursor: pointer;
+    list-style-type: none;
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.key:hover {
+    background-color: #1e282c;
+    color: white;
+    font-weight: bolder;
+}
