@@ -6,8 +6,9 @@ __author__ = 'rock'
 
 PORT = 8001
 DOMAIN = r'http://redis.explorer.local'
+DEBUG = True
 
-s = {'debug': True,
+s = {'debug': DEBUG,
      'static_path': kit.STATIC_DIR_PATH,
      'template_path': kit.TEMPLATE_DIR_PATH,
      }

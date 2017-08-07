@@ -6,20 +6,13 @@ import logging
 import tornado
 
 import kit
-from connection import Redis, SqlLite
+from connection import Redis
 
 __author__ = 'rock'
 
 
 class HomeHandler(tornado.web.RequestHandler):
     def get(self):
-        settings = {'url': 'redis://172.24.7.30:6379/0'}
-        r = Redis(**settings)
-        keys = r.scan()
-        logging.debug(keys)
-        s = SqlLite(r'data.db')
-        logging.debug(s.get_conn('redis://172.24.7.30:6379/0'))
-        logging.debug(s.get_conn_all()[0][1])
         self.render('hello.html')
 
 
