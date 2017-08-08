@@ -13,7 +13,11 @@
             </div>
             <input type="hidden" v-model="index"/>
             <ul style="padding-left: 10px">
-                <li v-for="k in keys" class="key"><span>{{ k }}</span></li>
+                <template v-for="k in keys">
+                    <router-link tag="li" class="key" :to="'/value/'+k">
+                        <span>{{ k }}</span>
+                    </router-link>
+                </template>
             </ul>
         </section>
     </aside>
@@ -21,10 +25,10 @@
 <script>
 
     module.exports = {
-        data:function(){
+        data: function () {
             return {
-                index:0,
-                keys:[]
+                index: 0,
+                keys: []
             }
         },
         methods: {
@@ -34,7 +38,6 @@
                 v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
                     function (response) {
                         let msg = response.body;
-                        console.log(msg);
                         v.index = msg[0];
                         v.keys = msg[1];
                     }, function (response) {
@@ -43,7 +46,7 @@
                 );
             }
         },
-        created:function(){
+        created: function () {
             this.getKeys();
         }
     }

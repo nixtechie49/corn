@@ -24,3 +24,15 @@ class KeyHandler(tornado.web.RequestHandler):
         if kit.log_level(logging.DEBUG):
             logging.debug('load keys:%s', j)
         self.write(j)
+
+
+class ValueHandler(tornado.web.RequestHandler):
+    def get(self, key):
+        if kit.log_level(logging.DEBUG):
+            logging.debug('load value by key: %s', key)
+        settings = {'url': 'redis://172.24.7.30:6379/0'}
+        r = Redis(**settings)
+        v = str(r.get(key), encoding='utf-8')
+        if kit.log_level(logging.DEBUG):
+            logging.debug('load value (%s):%s', key, v)
+        self.write(v)

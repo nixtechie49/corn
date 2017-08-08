@@ -3,9 +3,11 @@ import VueResource from "vue-resource";
 import VueRouter from "vue-router";
 import App from "../template/app.vue";
 import Routes from "./routes";
+import interceptors from "./interceptors"
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
+interceptors;
 
 // routing
 const router = new VueRouter({
