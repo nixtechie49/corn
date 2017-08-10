@@ -1,6 +1,6 @@
 <template>
     <div>
-        <footer class="main-footer">
+        <footer class="main-footer" style="margin-left: 0">
             <div class="pull-right hidden-xs">
                 <strong>May the force be with you!</strong>
             </div>

@@ -1,7 +1,13 @@
-import Main from "../template/components/welcome.vue";
+import Content from "../template/components/content.vue";
+import Welcome from "../template/components/welcome.vue";
 import Value from "../template/components/value.vue";
 
 export default [
-    {path: '/', component: Main},
-    {path: '/value/:key', component: Value}
+    {path: '/', component: Welcome},
+    {
+        path: '/:connection', component: Content,
+        children: [
+            {path: 'value/:key', components: {content:Value}}
+        ]
+    },
 ]
