@@ -15,15 +15,17 @@
         methods: {
             getValue: function () {
                 let v = this;
-                let url = '/value/' + v.$route.params.key;
-                v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
-                    (response) => {
-                        let msg = response.body;
-                        v.value = bePretty(JSON.stringify(msg));
-                    }, (response) => {
-                        console.log(response);
-                    }
-                );
+                if (v.$route.params.key) {
+                    let url = '/value/' + v.$route.params.key;
+                    v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
+                        (response) => {
+                            let msg = response.body;
+                            v.value = bePretty(JSON.stringify(msg));
+                        }, (response) => {
+                            console.log(response);
+                        }
+                    );
+                }
             }
         },
         updated: function () {

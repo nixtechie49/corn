@@ -10,7 +10,8 @@
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="/logout"><i class="fa fa-close"></i></a>
+                            <a href="/" v-show="back"><i class="fa fa-arrow-left"></i></a>
+                            <a href="/logout" v-show="!back"><i class="fa fa-close"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -18,3 +19,18 @@
         </header>
     </div>
 </template>
+<script>
+    module.exports = {
+        data: function () {
+            return {back: false}
+        },
+        methods: {
+            backOrLogout: function () {
+                this.back = window.location.hash !== '#/'
+            }
+        },
+        watch: {
+            '$route': 'backOrLogout'
+        },
+    }
+</script>

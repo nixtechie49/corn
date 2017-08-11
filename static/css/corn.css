@@ -11,12 +11,17 @@
     cursor: pointer;
     list-style-type: none;
     white-space: nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .key:hover {
     background-color: #1e282c;
     color: white;
     font-weight: bolder;
+}
+
+.client-head {
+    font-size: xx-large;
+    font-weight: bold
 }

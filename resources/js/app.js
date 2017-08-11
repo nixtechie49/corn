@@ -15,6 +15,8 @@ const router = new VueRouter({
     linkActiveClass: 'active'
 });
 
+const back = false;
+
 Vue.filter('time', function (value) {
     return new Date(parseInt(value)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
 });
@@ -22,4 +24,5 @@ Vue.filter('time', function (value) {
 const app = new Vue({
     router: router,
     render: h => h(App)
-}).$mount('#app');
+});
+app.$mount('#app');

@@ -1,67 +1,18 @@
 <template>
     <div>
-        <aside class="main-sidebar">
-            <section class="sidebar">
-                <div class="sidebar-form">
-                    <div class="input-group">
-                        <input type="text" name="pattern" class="form-control" placeholder="Search..."/>
-                        <span class="input-group-btn">
-                        <button type="button" name="search" id="search-btn" class="btn btn-flat">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </span>
-                    </div>
-                </div>
-                <input type="hidden" v-model="index"/>
-                <ul style="padding-left: 10px;max-height:100%;overflow: auto">
-                    <template v-for="k in keys">
-                        <router-link tag="li" class="key" :to="'/'+$route.params.connection+'/value/'+k">
-                            <span>{{ k }}</span>
-                        </router-link>
-                    </template>
-                </ul>
-            </section>
-        </aside>
-        <div style="min-height: 700px;" class="content-wrapper">
-            <section class="content-header">
-                <h1>
-                    <small>欢迎</small>
-                </h1>
-                <ol class="breadcrumb">
-                </ol>
-            </section>
-            <section class="content">
-                <router-view name="content"></router-view>
-            </section>
-        </div>
+        <content-left></content-left>
+        <content-main></content-main>
     </div>
 </template>
 <script>
 
+    import Key from './key.vue'
+    import Main from './main.vue'
+
     module.exports = {
-        data: function () {
-            return {
-                index: 0,
-                keys: []
-            }
-        },
-        methods: {
-            getKeys: function () {
-                let v = this;
-                let url = '/key';
-                v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
-                    function (response) {
-                        let msg = response.body;
-                        v.index = msg[0];
-                        v.keys = msg[1];
-                    }, function (response) {
-                        console.log(response);
-                    }
-                );
-            }
-        },
-        created: function () {
-            this.getKeys();
+        components: {
+            'content-left': Key,
+            'content-main': Main,
         }
     }
 </script>
