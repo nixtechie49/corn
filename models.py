@@ -15,11 +15,11 @@ class ConnInfo(Base):
     name = Column(name='NAME', type_=String(256), unique=True, nullable=False)
     """
     连接类型
-        0 Redis
+        1 Redis
             password 密码，host 主机地址，port 端口， db 连接库，path None
-        1 Redis Cluster
+        2 Redis Cluster
             password 密码，host "[{'host':'127.0.0.1','port':6379}]"，port None， db None， path None
-        2 zookeeper 
+        3 zookeeper 
             password None，host '127.0.0.1:2181,127.0.0.1:2181'，port None， db None， path zk路径 
     """
     type = Column(name='TYPE', type_=SMALLINT(), nullable=False, default=0)

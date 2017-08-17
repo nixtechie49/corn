@@ -4,6 +4,7 @@ import json
 import logging
 
 import tornado
+from tornado.web import RequestHandler
 
 import kit
 from connection import Redis
@@ -11,12 +12,12 @@ from connection import Redis
 __author__ = 'rock'
 
 
-class HomeHandler(tornado.web.RequestHandler):
+class HomeHandler(RequestHandler):
     def get(self):
         self.render('hello.html')
 
 
-class KeyHandler(tornado.web.RequestHandler):
+class KeyHandler(RequestHandler):
     def get(self):
         settings = {'url': 'redis://172.25.45.241:5568/0'}
         r = Redis(**settings)
@@ -26,7 +27,7 @@ class KeyHandler(tornado.web.RequestHandler):
         self.write(j)
 
 
-class ValueHandler(tornado.web.RequestHandler):
+class ValueHandler(RequestHandler):
     def get(self, key):
         if kit.log_level(logging.DEBUG):
             logging.debug('load value by key: %s', key)
@@ -41,3 +42,10 @@ class ValueHandler(tornado.web.RequestHandler):
         if kit.log_level(logging.DEBUG):
             logging.debug('load value (%s):%s', key, j)
         self.write(j)
+
+
+class ConnectionHandler(RequestHandler):
+    def post(self, *args, **kwargs):
+        if kit.log_level(logging.DEBUG):
+            logging.debug('args: %s', self.request.body)
+        self.write('success')

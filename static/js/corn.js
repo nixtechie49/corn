@@ -1,6 +1,42 @@
 /**
  * Created by rock on 15-1-9.
  */
+
+let is = {
+    types: ["Array", "Boolean", "Date", "Number", "Object", "RegExp", "String", "Window", "HTMLDocument"]
+};
+for (let i = 0, c; c = is.types[i++];) {
+    is[c] = function (type) {
+        return function (obj) {
+            return Object.prototype.toString.call(obj) == "[object " + type + "]";
+        }
+    }(c);
+}
+
+function isNull(o) {
+    return o === null || o === undefined;
+}
+
+function isNotNull(o) {
+    return !isNull(o);
+}
+
+function isBlank(o) {
+    if (isNull(o))
+        return true;
+    else if (o.is('String')) {
+        return o.trim() === '';
+    } else if (o.is('Array')) {
+        return o.length === 0;
+    }
+    return false;
+}
+
+function isNotBlank(o) {
+    return !isBlank(o);
+}
+
+
 function bePretty(j) {
     if (j === undefined || j === null || trim(j) === '') {
         return '';
@@ -97,15 +133,4 @@ function highlight(match, needComma) {
         s += ','
     }
     return s + '</span>';
-}
-
-let is = {
-    types: ["Array", "Boolean", "Date", "Number", "Object", "RegExp", "String", "Window", "HTMLDocument"]
-};
-for (let i = 0, c; c = is.types[i++];) {
-    is[c] = function (type) {
-        return function (obj) {
-            return Object.prototype.toString.call(obj) == "[object " + type + "]";
-        }
-    }(c);
 }

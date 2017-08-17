@@ -25,3 +25,8 @@
     font-size: xx-large;
     font-weight: bold
 }
+
+.content-main {
+    margin-left: 0;
+    padding: 0 100px 0 100px
+}

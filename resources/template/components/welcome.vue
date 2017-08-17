@@ -1,5 +1,5 @@
 <template>
-    <div class="content-wrapper" ref="mainContent" style="margin-left: 0;padding: 0 100px 0 100px">
+    <div class="content-wrapper content-main" ref="mainContent">
         <section class="content-header">
             <h1>
                 选择连接
@@ -14,7 +14,7 @@
         <section class="content">
             <template>
                 <div class="col-lg-3 col-xs-4">
-                    <div class="small-box bg-aqua">
+                    <div class="small-box bg-green">
                         <div class="inner" @click="go(123)" style="cursor: pointer">
                             <span class="client-head">Darkhouse</span>
                             <p>Redis Cluster</p>
@@ -28,6 +28,20 @@
                     </div>
                 </div>
             </template>
+            <div class="col-lg-3 col-xs-4">
+                <div class="small-box bg-yellow">
+                    <div class="inner" @click="add()" style="cursor: pointer">
+                        <span class="client-head">添加</span>
+                        <p>添加一个新的连接</p>
+                    </div>
+                    <div class="icon" @click="add()" style="cursor: pointer">
+                        <i class="fa fa-plus-circle"></i>
+                    </div>
+                    <a href="javascript:void(0)" @click="add()" class="small-box-footer">
+                        &nbsp;
+                    </a>
+                </div>
+            </div>
         </section>
     </div>
 </template>
@@ -36,6 +50,9 @@
         methods: {
             go: function (id) {
                 this.$router.push({path: '/' + id})
+            },
+            add: function () {
+                this.$router.push({path: '/connection'})
             }
         },
         mounted: function () {

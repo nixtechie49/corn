@@ -6,6 +6,7 @@ __author__ = 'rock'
 
 r = [
     (r"/", handlers.HomeHandler),
+    (r"/connection", handlers.ConnectionHandler),
     (r"/key", handlers.KeyHandler),
     (r"/value/([\s\S]*)", handlers.ValueHandler),
 ]
