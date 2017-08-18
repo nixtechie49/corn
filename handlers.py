@@ -19,7 +19,10 @@ class HomeHandler(RequestHandler):
 
 
 class KeyHandler(RequestHandler):
-    def get(self):
+    def get(self, conn_id):
+        conn = sql.get(ConnInfo, conn_id)
+        if kit.log_level(logging.DEBUG):
+            logging.debug('get conn:%s', conn)
         settings = {'url': 'redis://172.25.45.241:5568/0'}
         r = Redis(**settings)
         keys = r.scan()
@@ -54,7 +57,7 @@ class ConnectionHandler(RequestHandler):
         self.write(kit.get_success())
 
     def get(self):
-        data = sql.query_all_connection()
+        data = sql.query(ConnInfo)
         self.write(kit.get_success(data))
 
 

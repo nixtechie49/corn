@@ -2,7 +2,7 @@
 import json
 import logging
 import os
-from sqlalchemy.engine.result import RowProxy
+from models import Base
 
 __author__ = 'rock'
 
@@ -19,13 +19,12 @@ def log_level(level):
 
 
 def json_handler(obj):
-    logging.debug(type(obj))
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
     elif isinstance(obj, bytes):
         return str(obj, 'utf-8')
-    elif isinstance(obj, RowProxy):
-        return obj.__dict__
+    elif isinstance(obj, Base):
+        return obj.as_dict()
     else:
         return str(obj)
 

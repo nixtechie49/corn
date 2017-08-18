@@ -1,6 +1,5 @@
 # encoding:utf-8
 
-from marshmallow_sqlalchemy import ModelSchema
 from sqlalchemy import Column, INTEGER, SMALLINT, String
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -44,10 +43,6 @@ class ConnInfo(Base):
         return "<ConnInfo(id='%d',name='%s',password='%s',host='%s',port=%s,db=%s,path=%s)>" % (
             self.id, self.name, self.password, self.host, self.port, self.db, self.path)
 
-
-class ConnInfoSchema(ModelSchema):
-    class Meta:
-        model = ConnInfo
-
-
-conn_info_schema = ConnInfoSchema()
+    def as_dict(self):
+        return {'id': self.id, 'name': self.name, 'type': self.type, 'password': self.password, 'host': self.host,
+                'port': self.port, 'db': self.db, 'path': self.path}

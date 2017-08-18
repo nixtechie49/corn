@@ -12,14 +12,14 @@
             </ol>
         </section>
         <section class="content">
-            <template>
+            <template v-for="c in conn">
                 <div class="col-lg-3 col-xs-4">
                     <div class="small-box bg-green">
-                        <div class="inner" @click="go(123)" style="cursor: pointer">
-                            <span class="client-head">Darkhouse</span>
+                        <div class="inner" @click="go(c.id)" style="cursor: pointer">
+                            <span class="client-head">{{ c.name }}</span>
                             <p>Redis Cluster</p>
                         </div>
-                        <div class="icon" @click="go(123)" style="cursor: pointer">
+                        <div class="icon" @click="go(c.id)" style="cursor: pointer">
                             <i class="fa fa-play-circle"></i>
                         </div>
                         <a href="#" class="small-box-footer">
@@ -47,6 +47,11 @@
 </template>
 <script>
     module.exports = {
+        data:function(){
+            return {
+                conn:{}
+            }
+        },
         methods: {
             go: function (id) {
                 this.$router.push({path: '/' + id})
@@ -63,6 +68,7 @@
                         if (res.code === 1) {
                             let data = res.data;
                             console.log(data);
+                            v.conn = data;
                         }
                     }, function (response) {
                         console.log(response);
