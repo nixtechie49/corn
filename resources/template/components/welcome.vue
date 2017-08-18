@@ -53,9 +53,25 @@
             },
             add: function () {
                 this.$router.push({path: '/connection'})
+            },
+            listConn: function () {
+                let v = this;
+                let url = '/connection';
+                v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
+                    function (response) {
+                        let res = response.body;
+                        if (res.code === 1) {
+                            let data = res.data;
+                            console.log(data);
+                        }
+                    }, function (response) {
+                        console.log(response);
+                    }
+                );
             }
         },
         mounted: function () {
+            this.listConn();
             let ref = this.$refs;
             let height = document.documentElement.clientHeight;
             ref.mainContent.style.height = (height - 101) + 'px';

@@ -3,11 +3,12 @@
 import json
 import logging
 
-import tornado
 from tornado.web import RequestHandler
 
 import kit
+import sql
 from connection import Redis
+from models import ConnInfo
 
 __author__ = 'rock'
 
@@ -21,10 +22,10 @@ class KeyHandler(RequestHandler):
     def get(self):
         settings = {'url': 'redis://172.25.45.241:5568/0'}
         r = Redis(**settings)
-        j = json.dumps(r.scan(), default=kit.date_handler)
+        keys = r.scan()
         if kit.log_level(logging.DEBUG):
-            logging.debug('load keys:%s', j)
-        self.write(j)
+            logging.debug('load keys:%s', keys)
+        self.write(kit.get_success(keys))
 
 
 class ValueHandler(RequestHandler):
@@ -41,11 +42,22 @@ class ValueHandler(RequestHandler):
             j = 'nil'
         if kit.log_level(logging.DEBUG):
             logging.debug('load value (%s):%s', key, j)
-        self.write(j)
+        self.write(kit.get_success(j))
 
 
 class ConnectionHandler(RequestHandler):
     def post(self, *args, **kwargs):
         if kit.log_level(logging.DEBUG):
             logging.debug('args: %s', self.request.body)
-        self.write('success')
+        conn = json.loads(str(self.request.body, encoding='utf-8'))
+        sql.add_connection(conn)
+        self.write(kit.get_success())
+
+    def get(self):
+        data = sql.query_all_connection()
+        self.write(kit.get_success(data))
+
+
+class ConnHandler(RequestHandler):
+    def get(self, conn_id):
+        self.write(kit.get_success())

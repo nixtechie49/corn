@@ -19,8 +19,11 @@
                     let url = '/value/' + v.$route.params.key;
                     v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
                         (response) => {
-                            let msg = response.body;
-                            v.value = bePretty(JSON.stringify(msg));
+                            let res = response.body;
+                            if (res.code === 1) {
+                                let data = res.data;
+                                v.value = bePretty(JSON.stringify(data));
+                            }
                         }, (response) => {
                             console.log(response);
                         }

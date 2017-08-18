@@ -36,9 +36,12 @@
                 let url = '/key';
                 v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
                     function (response) {
-                        let msg = response.body;
-                        v.index = msg[0];
-                        v.keys = msg[1];
+                        let res = response.body;
+                        if (res.code === 1) {
+                            let data = res.data;
+                            v.index = data[0];
+                            v.keys = data[1];
+                        }
                     }, function (response) {
                         console.log(response);
                     }

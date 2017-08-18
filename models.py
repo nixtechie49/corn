@@ -1,5 +1,6 @@
 # encoding:utf-8
 
+from marshmallow_sqlalchemy import ModelSchema
 from sqlalchemy import Column, INTEGER, SMALLINT, String
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -29,13 +30,24 @@ class ConnInfo(Base):
     db = Column(name='DB', type_=SMALLINT(), nullable=True)
     path = Column(name='PATH', type_=String(256), nullable=True)
 
-    def __init__(self, id=None, name=None, host=None, port=None, db=None):
+    def __init__(self, id=None, name=None, type=None, password=None, host=None, port=None, db=None, path=None):
         self.id = id
         self.name = name
+        self.type = type
+        self.password = password
         self.host = host
         self.port = port
         self.db = db
+        self.path = path
 
     def __repr__(self):
-        return "<ConnInfo(id='%d',name='%s',host='%s',port='%d',db='%d')>" % (
-            self.id, self.name, self.host, self.port, self.db)
+        return "<ConnInfo(id='%d',name='%s',password='%s',host='%s',port=%s,db=%s,path=%s)>" % (
+            self.id, self.name, self.password, self.host, self.port, self.db, self.path)
+
+
+class ConnInfoSchema(ModelSchema):
+    class Meta:
+        model = ConnInfo
+
+
+conn_info_schema = ConnInfoSchema()
