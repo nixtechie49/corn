@@ -33,7 +33,7 @@
         methods: {
             getKeys: function () {
                 let v = this;
-                let url = '/' + v.$route.params.connection + '/key';
+                let url = '/' + v.$route.params.connection + '/key?index=' + v.index;
                 v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
                     function (response) {
                         let res = response.body;

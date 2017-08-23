@@ -2,6 +2,8 @@
 import json
 import logging
 import os
+import re
+
 from models import Base
 
 __author__ = 'rock'
@@ -16,6 +18,26 @@ LOG_FORMAT = "[%(asctime)s]-[%(levelname)s] : %(message)s [from %(module)s.%(fun
 
 def log_level(level):
     return level <= logging.getLogger().getEffectiveLevel()
+
+
+def debug(*args):
+    if log_level(logging.DEBUG):
+        logging.debug(*args)
+
+
+def info(*args):
+    if log_level(logging.INFO):
+        logging.info(*args)
+
+
+def warning(*args):
+    if log_level(logging.WARNING):
+        logging.warning(*args)
+
+
+def error(*args):
+    if log_level(logging.ERROR):
+        logging.error(*args)
 
 
 def json_handler(obj):
@@ -35,3 +57,12 @@ def get_success(data=None):
 
 def get_fail(msg):
     return json.dumps({'code': 0, 'msg': msg}, default=json_handler)
+
+
+if __name__ == "__main__":
+    p = re.compile(r'[\S]*')
+    m = re.match(p, 'dh_00,0_media_0_20170811_107')
+    if m:
+        print(m.group())
+    else:
+        print('None')

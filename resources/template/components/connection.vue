@@ -160,7 +160,7 @@
                     function (response) {
                         let res = response.body;
                         if (res.code === 1) {
-                            v.$router.push('/connection');
+                            v.$router.push('/');
                         }
                     }, function (response) {
                         console.log(response);

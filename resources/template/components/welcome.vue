@@ -66,9 +66,7 @@
                     function (response) {
                         let res = response.body;
                         if (res.code === 1) {
-                            let data = res.data;
-                            console.log(data);
-                            v.conn = data;
+                            v.conn = res.data;
                         }
                     }, function (response) {
                         console.log(response);

@@ -1,63 +1,116 @@
 # encoding:utf-8
 
-import logging
+import json
 
 from redis import StrictRedis
 from rediscluster import StrictRedisCluster
 from rediscluster.connection import ClusterConnectionPool
 
 import kit
+import sql
+from models import ConnInfo
 
 __author__ = 'rock'
 
+__conn_map__ = {}
+
+
+def take(cid):
+    cid = int(cid)
+    kit.debug('get connection = %d', cid)
+    r = __conn_map__.get(cid)
+    if not r:
+        ci = sql.get(ConnInfo, cid)
+        kit.info('init redis connection<id=%d>', cid)
+        r = Redis(ci)
+        __conn_map__[cid] = r
+    return r
+
 
 class Redis:
-    def __init__(self, **settings):
-        if 'url' not in settings:
-            url = Redis.url(settings['host'], settings['port'], settings['db'])
+    def __init__(self, ci):
+        kit.debug('create connection = %s', ci)
+        t = ci.type
+        self.t = t
+        if t == 1:
+            kit.debug('create redis connection.')
+            self.conn = StrictRedis(host=ci.host, port=ci.port, db=ci.db)
+        elif t == 2:
+            kit.debug('create redis cluster connection.')
+            host = ci.host
+            nodes = json.loads(host)
+            pool = ClusterConnectionPool(startup_nodes=nodes)
+            self.conn = StrictRedisCluster(connection_pool=pool, decode_responses=True)
+        elif t == 3:
+            kit.debug('create redis connection from zookeeper.')
         else:
-            url = settings['url']
-        logging.debug('connect url = %s', url)
-        self.conn = StrictRedis.from_url(url=url)
+            raise AttributeError('illegal ConnInfo type.')
         if self.test():
-            logging.info('connect redis(%s) success', self.conn)
+            self.ci = ci
+            kit.info('connect redis(%s) success', ci.host)
 
     def test(self):
-        logging.debug('test connect redis(%s)', self.conn)
-        good = self.conn.ping()
-        logging.debug('redis connection is good[%s]', good)
+        kit.debug('test connect redis(%s)', self.conn)
+        good = False
+        try:
+            result = self.conn.ping()
+            if self.t == 1:
+                good = result
+            else:
+                for k in result:
+                    v = result[k]
+                    kit.debug('test [%s] result : %s', k, v)
+                    if not v:
+                        return False
+                good = True
+        except Exception as e:
+            kit.error(e)
+        finally:
+            kit.debug('redis connection is good[%s]', good)
         return good
 
     def db_size(self):
         return self.conn.dbsize()
 
-    def scan(self, match='*', index=0):
-        # result = self.conn.eval("return redis.call('scan','0','MATCH',KEYS[1],'COUNT',1000)", 1, '*')
-        result = self.conn.scan(cursor=index, match=match, count=100)
-        size = len(result[1])
-        if kit.log_level(logging.DEBUG):
-            logging.debug('scan %s from %d result(%d) : %s', match, index, size, result)
-        if result[0] != 0 and size == 0:
-            return self.scan(match, index)
-        return result
+    def scan_iter(self, match='*'):
+        return self.conn.scan_iter(match, 100)
 
-    def get(self, key):
-        logging.debug('get value by key: %s', key)
+    def get_str(self, key):
+        kit.debug('get str value by key: %s', key)
         return self.conn.get(key)
 
-    @staticmethod
-    def url(host, port, db):
-        return r'redis://' + host + r':' + str(port) + r'/' + str(db)
+    def l_range(self, key):
+        start = 0
+        end = -1
+        kit.debug('get list value from %d to %d by key: %s', start, end, key)
+        return self.conn.lrange(key, start, end)
 
-    def test(self):
-        r = StrictRedis.from_url(url='redis://172.25.45.241:5568/0')
-        print(r.execute_command('cluster slots'))
+    def z_range(self, key):
+        start = 0
+        end = -1
+        kit.debug('get sorted set value from %d to %d by key: %s', start, end, key)
+        return self.conn.zrange(key, start, end)
 
-        nodes = [
-            {'host': '172.25.61.74', 'port': '8147'},
-            {'host': '172.25.45.241', 'port': '5568'},
-            {'host': '172.25.45.240', 'port': '5590'}
-        ]
-        pool = ClusterConnectionPool(startup_nodes=nodes)
-        rc = StrictRedisCluster(connection_pool=pool, decode_responses=True)
-        print(rc.scan(cursor=0, match='*', count=100))
+    def s_members(self, key):
+        kit.debug('get set value by key: %s', key)
+        return self.conn.smembers(key)
+
+    def h_get_all(self, key):
+        kit.debug('get hash value by key: %s', key)
+        return self.conn.hgetall(key)
+
+    def get(self, t, k):
+        f = self.__t_f_map__[t]
+        return f(self, k)
+
+    def type(self, key):
+        kit.debug('get type by key: %s', key)
+        return self.conn.type(key)
+
+    __t_f_map__ = {
+        b'string': get_str,
+        b'list': l_range,
+        b'set': s_members,
+        b'zset': z_range,
+        b'hash': h_get_all,
+    }
