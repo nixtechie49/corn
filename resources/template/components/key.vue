@@ -11,13 +11,16 @@
                     </span>
                 </div>
             </div>
-            <input type="hidden" v-model="index"/>
+            <input type="hidden" v-model="stamp"/>
             <ul style="margin-bottom: 0;padding-left:10px; overflow-y:auto; overflow-x:hidden;" ref="innerSide">
                 <template v-for="k in keys">
                     <router-link tag="li" class="key" :to="'/'+$route.params.connection+'/value/'+k">
                         <span>{{ k }}</span>
                     </router-link>
                 </template>
+                <li class="key" style="text-align: center" @click="getKeys(stamp)">
+                    <span>更多</span>
+                </li>
             </ul>
         </section>
     </aside>
@@ -26,21 +29,24 @@
     module.exports = {
         data: function () {
             return {
-                index: 0,
+                stamp: 0,
                 keys: []
             }
         },
         methods: {
             getKeys: function () {
                 let v = this;
-                let url = '/' + v.$route.params.connection + '/key?index=' + v.index;
+                let url = '/' + v.$route.params.connection + '/key?stamp=' + v.stamp;
                 v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
                     function (response) {
                         let res = response.body;
                         if (res.code === 1) {
                             let data = res.data;
-                            v.index = data[0];
-                            v.keys = data[1];
+                            v.stamp = data[0];
+                            let array = data[1];
+                            for (let i in array) {
+                                v.keys.push(array[i]);
+                            }
                         }
                     }, function (response) {
                         console.log(response);

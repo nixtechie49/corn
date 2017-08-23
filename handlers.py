@@ -1,6 +1,7 @@
 # encoding:utf-8
 
 import json
+import time
 
 from tornado.web import RequestHandler
 
@@ -17,24 +18,28 @@ class HomeHandler(RequestHandler):
         self.render('hello.html')
 
 
+__iter_cache__ = {}
+
+
 class KeyHandler(RequestHandler):
     def get(self, conn_id):
         kit.debug('get conn:%s', conn_id)
-        conn = connection.take(conn_id)
-        it = conn.scan_iter()
-        start = int(self.get_argument('index'))
+        stamp = int(self.get_argument('stamp'))
+        if stamp in __iter_cache__:
+            it = __iter_cache__[stamp]
+        else:
+            millis = int(round(time.time() * 1000))
+            stamp = str(conn_id) + str(millis)
+            conn = connection.take(conn_id)
+            it = conn.scan_iter()
+            __iter_cache__[stamp] = it
         keys = []
         i = 0
-        end = start + 100
-        for k in it:
-            if i == end:
-                break
-            if i >= start:
-                keys.append(k)
+        while i < 100:
+            keys.append(next(it))
             i = i + 1
-        kit.debug('scan keys from index [%d] to [%d]', start, end)
         kit.debug('load keys:%s', keys)
-        self.write(kit.get_success((end, keys)))
+        self.write(kit.get_success((stamp, keys)))
 
 
 class ValueHandler(RequestHandler):
