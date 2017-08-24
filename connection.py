@@ -8,6 +8,7 @@ from rediscluster.connection import ClusterConnectionPool
 
 import kit
 import sql
+import zk
 from models import ConnInfo
 
 __author__ = 'rock'
@@ -27,6 +28,10 @@ def take(cid):
     return r
 
 
+def __update_address__(data, stat, event):
+    pass
+
+
 class Redis:
     def __init__(self, ci):
         kit.debug('create connection = %s', ci)
@@ -37,12 +42,22 @@ class Redis:
             self.conn = StrictRedis(host=ci.host, port=ci.port, db=ci.db)
         elif t == 2:
             kit.debug('create redis cluster connection.')
-            host = ci.host
-            nodes = json.loads(host)
+            nodes = json.loads(ci.host)
             pool = ClusterConnectionPool(startup_nodes=nodes)
             self.conn = StrictRedisCluster(connection_pool=pool, decode_responses=True)
         elif t == 3:
             kit.debug('create redis connection from zookeeper.')
+            client = zk.Client(hosts=ci.host, read_only=True)
+            node = client.get(ci.path)
+            arr = str(node[0], encoding='utf-8').split('\n')
+            address = []
+            for h in arr:
+                if h is '':
+                    continue
+                a = h.split(':')
+                address.append({'host': a[0], 'port': int(a[1])})
+            pool = ClusterConnectionPool(startup_nodes=address)
+            self.conn = StrictRedisCluster(connection_pool=pool, decode_responses=True)
         else:
             raise AttributeError('illegal ConnInfo type.')
         if self.test():
@@ -72,8 +87,10 @@ class Redis:
     def db_size(self):
         return self.conn.dbsize()
 
-    def scan_iter(self, match='*'):
-        return self.conn.scan_iter(match, 100)
+    def scan_iter(self, match='*', count=None):
+        if match is not '*':
+            match = '*' + match + '*'
+        return self.conn.scan_iter(match=match, count=count)
 
     def get_str(self, key):
         kit.debug('get str value by key: %s', key)

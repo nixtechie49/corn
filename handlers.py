@@ -5,6 +5,7 @@ import time
 
 from tornado.web import RequestHandler
 
+import cache
 import connection
 import kit
 import sql
@@ -18,26 +19,32 @@ class HomeHandler(RequestHandler):
         self.render('hello.html')
 
 
-__iter_cache__ = {}
-
-
 class KeyHandler(RequestHandler):
     def get(self, conn_id):
         kit.debug('get conn:%s', conn_id)
-        stamp = int(self.get_argument('stamp'))
-        if stamp in __iter_cache__:
-            it = __iter_cache__[stamp]
+        stamp = self.get_argument(name='stamp', default='0')
+        match = self.get_argument(name='match', default='*')
+        stamp = conn_id + '_' + match + '_' + stamp.split('_')[-1]
+        kit.debug(stamp)
+        count = 100
+        if stamp in cache.iterator:
+            it = cache.iterator[stamp]
         else:
-            millis = int(round(time.time() * 1000))
-            stamp = str(conn_id) + str(millis)
+            stamp = conn_id + '_' + match + '_' + str(int(round(time.time() * 1000)))
             conn = connection.take(conn_id)
-            it = conn.scan_iter()
-            __iter_cache__[stamp] = it
+            it = conn.scan_iter(match=match, count=count)
+            cache.iterator[stamp] = it
         keys = []
         i = 0
-        while i < 100:
-            keys.append(next(it))
-            i = i + 1
+        while i < count:
+            try:
+                keys.append(next(it))
+                i += 1
+            except StopIteration:
+                kit.debug('iter stop,delete cache key:%s', stamp)
+                del cache.iterator[stamp]
+                stamp = '-1'
+                break
         kit.debug('load keys:%s', keys)
         self.write(kit.get_success((stamp, keys)))
 

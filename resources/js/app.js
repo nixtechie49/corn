@@ -3,7 +3,7 @@ import VueResource from "vue-resource";
 import VueRouter from "vue-router";
 import App from "../template/app.vue";
 import Routes from "./routes";
-import interceptors from "./interceptors"
+import interceptors from "./interceptors";
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -14,8 +14,6 @@ const router = new VueRouter({
     routes: Routes,
     linkActiveClass: 'active'
 });
-
-const back = false;
 
 Vue.filter('time', function (value) {
     return new Date(parseInt(value)).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");

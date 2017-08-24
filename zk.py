@@ -17,6 +17,15 @@ class Client:
     def get(self, path):
         return self.conn.get(path)
 
+    def get_watch(self, path, func):
+        return self.conn.get(path=path, watch=func)
+
+    def watch(self, path, func):
+        return self.conn.exists(path=path, watch=func)
+
+    def stop(self):
+        return self.conn.stop()
+
 
 def shutdown():
     for c in __client__:
