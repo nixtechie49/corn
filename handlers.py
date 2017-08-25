@@ -1,9 +1,10 @@
 # encoding:utf-8
 
 import json
+import logging as log
 import time
 
-from tornado.web import RequestHandler
+from tornado.web import RequestHandler, MissingArgumentError
 
 import cache
 import connection
@@ -21,11 +22,14 @@ class HomeHandler(RequestHandler):
 
 class KeyHandler(RequestHandler):
     def get(self, conn_id):
-        kit.debug('get conn:%s', conn_id)
+        log.debug('get conn:%s', conn_id)
         stamp = self.get_argument(name='stamp', default='0')
-        match = self.get_argument(name='match', default='*')
-        stamp = conn_id + '_' + match + '_' + stamp.split('_')[-1]
-        kit.debug(stamp)
+        try:
+            match = self.get_argument(name='match')
+            stamp = conn_id + '_' + match + '_' + stamp.split('_')[-1]
+        except MissingArgumentError:
+            match = '*'
+        log.debug(stamp)
         count = 100
         if stamp in cache.iterator:
             it = cache.iterator[stamp]
@@ -41,24 +45,24 @@ class KeyHandler(RequestHandler):
                 keys.append(next(it))
                 i += 1
             except StopIteration:
-                kit.debug('iter stop,delete cache key:%s', stamp)
+                log.debug('iter stop,delete cache key:%s', stamp)
                 del cache.iterator[stamp]
                 stamp = '-1'
                 break
-        kit.debug('load keys:%s', keys)
+        log.debug('load keys:%s', keys)
         self.write(kit.get_success((stamp, keys)))
 
 
 class ValueHandler(RequestHandler):
     def get(self, conn_id, key):
-        kit.debug('load value by key: %s', key)
+        log.debug('load value by key: %s', key)
         r = connection.take(conn_id)
         t = r.type(key)
-        kit.debug('load key type: %s', t)
+        log.debug('load key type: %s', t)
         v = r.get(t, key)
-        kit.debug('load key : %s', v)
+        log.debug('load key : %s', v)
         data = self.pack_data(t, v)
-        kit.debug('load value (%s):%s', key, data)
+        log.debug('load value (%s):%s', key, data)
         self.write(kit.get_success((t, data)))
 
     def str_data(self, s):
@@ -108,7 +112,7 @@ class ValueHandler(RequestHandler):
 
 class ConnectionHandler(RequestHandler):
     def post(self, *args, **kwargs):
-        kit.debug('args: %s', self.request.body)
+        log.debug('args: %s', self.request.body)
         conn = json.loads(str(self.request.body, encoding='utf-8'))
         sql.add_connection(conn)
         self.write(kit.get_success())

@@ -6,7 +6,7 @@
                     <input type="text" name="pattern" v-model="searchText" class="form-control"
                            placeholder="Search | Filter"/>
                     <span class="input-group-btn">
-                        <button type="button" name="search" @click="search()" id="search-btn" class="btn btn-flat">
+                        <button type="button" @click="search()" id="search-btn" class="btn btn-flat">
                             <i class="fa fa-search"></i>
                         </button>
                     </span>
@@ -15,7 +15,7 @@
             <input type="hidden" v-model="stamp"/>
             <ul style="margin-bottom: 0;padding-left:10px; overflow-y:auto; overflow-x:hidden;" ref="innerSide">
                 <template v-for="k in filterKey">
-                    <router-link tag="li" class="key" :to="'/'+$route.params.connection+'/value/'+k">
+                    <router-link tag="li" :title="k" class="key" :to="'/'+$route.params.connection+'/value/'+k">
                         <span>{{ k }}</span>
                     </router-link>
                 </template>
@@ -67,11 +67,14 @@
             },
             search: function () {
                 let v = this;
-                if (v.searchText !== null && v.searchText !== undefined && v.searchText.trim() !== '') {
-                    let url = '/' + v.$route.params.connection + '/key?stamp=' + v.stamp + '&match=' + v.searchText;
-                    v.getKeys(url);
-                }
-            }
+                v.keys = [];
+                let url = '/' + v.$route.params.connection + '/key?stamp=' + v.stamp;
+                if (v.searchText !== null && v.searchText !== undefined && v.searchText.trim() !== '')
+                    url += ('&match=' + v.searchText);
+                else
+                    url += '&match=*';
+                v.getKeys(url);
+            },
         },
         mounted: function () {
             let ref = this.$refs;

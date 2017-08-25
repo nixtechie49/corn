@@ -1,6 +1,5 @@
 # encoding:utf-8
 import json
-import logging
 import os
 import re
 
@@ -14,30 +13,6 @@ TEMPLATE_DIR_PATH = os.path.join(ROOT_PATH, 'templates/')
 STATIC_DIR_PATH = os.path.join(ROOT_PATH, 'static/')
 
 LOG_FORMAT = "[%(asctime)s]-[%(levelname)s] : %(message)s [from %(module)s.%(funcName)s.%(lineno)d]"
-
-
-def log_level(level):
-    return level <= logging.getLogger().getEffectiveLevel()
-
-
-def debug(*args):
-    if log_level(logging.DEBUG):
-        logging.debug(*args)
-
-
-def info(*args):
-    if log_level(logging.INFO):
-        logging.info(*args)
-
-
-def warning(*args):
-    if log_level(logging.WARNING):
-        logging.warning(*args)
-
-
-def error(*args):
-    if log_level(logging.ERROR):
-        logging.error(*args)
 
 
 def json_handler(obj):

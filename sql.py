@@ -5,7 +5,7 @@ import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
-import kit
+import logging as log
 import models
 
 __author__ = 'rock'
@@ -17,13 +17,13 @@ DBSession = sessionmaker(bind=engine)
 
 def init():
     if not os.path.exists(table_name):
-        kit.info('data file not exists, creating...')
+        log.info('data file not exists, creating...')
         models.ConnInfo.__table__.create(bind=engine)
-        kit.info('data file created')
+        log.info('data file created')
 
 
 def add_connection(data):
-    kit.debug('insert new data %s', data)
+    log.debug('insert new data %s', data)
     pre_sql = 'INSERT INTO CONN_INFO ' \
               '(NAME,TYPE,PWD,HOST,PORT,DB,PATH) VALUES ' \
               '(:name,:type,:password,:host,:port,:db,:path)'
@@ -33,23 +33,23 @@ def add_connection(data):
 
 
 def query(cls, *criterion):
-    kit.debug('query data by : %s', criterion)
+    log.debug('query data by : %s', criterion)
     session = DBSession()
     q = session.query(cls)
     if criterion:
         q = q.filter(*criterion)
     session.close()
     result = q.all()
-    kit.debug('query result is : %s', result)
+    log.debug('query result is : %s', result)
     return result
 
 
 def get(cls, id):
-    kit.debug('get data id : %s', id)
+    log.debug('get data id : %s', id)
     session = DBSession()
     q = session.query(cls)
     q = q.filter('id=' + str(id))
     session.close()
     result = q.one()
-    kit.debug('get result is : %s', result)
+    log.debug('get result is : %s', result)
     return result
