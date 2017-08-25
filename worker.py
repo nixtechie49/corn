@@ -23,7 +23,7 @@ def clean_cache():
         now = int(round(time.time() * 1000))
         log.debug('now[%d] iter is : %s', now, k)
         k_time = int(k.split('_')[-1])
-        if (now - k_time) > (2 * _1_min * 1000):
+        if (now - k_time) > (_1_hour * 1000):
             temp.append(k)
     if len(temp) > 0:
         log.info('clean iterator cache.')

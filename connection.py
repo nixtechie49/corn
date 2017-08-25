@@ -28,7 +28,7 @@ def take(cid):
     return r
 
 
-def __update_address__(data, stat, event):
+def _update_address(data, stat, event):
     pass
 
 
@@ -48,7 +48,7 @@ class Redis:
         elif t == 3:
             log.debug('create redis connection from zookeeper.')
             client = zk.Client(hosts=ci.host, read_only=True)
-            node = client.get(ci.path)
+            node = client.get_watch(path=ci.path, func=_update_address)
             arr = str(node[0], encoding='utf-8').split('\n')
             address = []
             for h in arr:
