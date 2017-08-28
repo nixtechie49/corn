@@ -1,6 +1,7 @@
 /.idea
 *.iml
 *.db
+*.log
 venv/
 node_modules/
 static/js/app.js

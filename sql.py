@@ -1,11 +1,11 @@
 # encoding:utf-8
 
+import logging
 import os
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
-import logging as log
 import models
 
 __author__ = 'rock'
@@ -13,6 +13,7 @@ table_name = 'data.db'
 engine = create_engine('sqlite:///' + table_name, echo=True, pool_recycle=3600)
 
 DBSession = sessionmaker(bind=engine)
+log = logging.getLogger('dev')
 
 
 def init():

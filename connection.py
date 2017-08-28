@@ -1,7 +1,7 @@
 # encoding:utf-8
 
 import json
-import logging as log
+import logging
 
 from redis import StrictRedis
 from rediscluster import StrictRedisCluster
@@ -14,6 +14,8 @@ from models import ConnInfo
 __author__ = 'rock'
 
 __conn_map__ = {}
+
+log = logging.getLogger('dev')
 
 
 def take(cid):

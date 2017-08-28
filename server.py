@@ -1,10 +1,10 @@
 # encoding:utf-8
 
 import logging
+from logging import config
 
 import tornado.web
 
-import kit
 import routers
 import settings
 import sql
@@ -17,7 +17,7 @@ application = tornado.web.Application(**settings.s)
 application.add_handlers(r".*", routers.r)
 
 if __name__ == "__main__":
-    logging.basicConfig(format=kit.LOG_FORMAT, datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
+    logging.config.fileConfig('./log.conf')
     application.listen(settings.PORT)
     instance = tornado.ioloop.IOLoop.instance()
     sql.init()

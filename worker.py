@@ -1,6 +1,6 @@
 # encoding:utf-8
 
-import logging as log
+import logging
 import sched
 import threading
 import time
@@ -14,6 +14,7 @@ _1_hour = 60 * _1_min
 _1_day = _1_hour * 24
 
 s = sched.scheduler(time.time, time.sleep)
+log = logging.getLogger('dev')
 
 
 def clean_cache():

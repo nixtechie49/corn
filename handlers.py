@@ -1,7 +1,7 @@
 # encoding:utf-8
 
 import json
-import logging as log
+import logging
 import time
 
 from tornado.web import RequestHandler, MissingArgumentError
@@ -13,6 +13,8 @@ import sql
 from models import ConnInfo
 
 __author__ = 'rock'
+
+log = logging.getLogger('dev')
 
 
 class HomeHandler(RequestHandler):
