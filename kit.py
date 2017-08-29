@@ -1,7 +1,6 @@
 # encoding:utf-8
 import json
 import os
-import re
 
 from models import Base
 
@@ -32,12 +31,3 @@ def get_success(data=None):
 
 def get_fail(msg):
     return json.dumps({'code': 0, 'msg': msg}, default=json_handler)
-
-
-if __name__ == "__main__":
-    p = re.compile(r'[\S]*')
-    m = re.match(p, 'dh_00,0_media_0_20170811_107')
-    if m:
-        print(m.group())
-    else:
-        print('None')
