@@ -6,25 +6,22 @@ import threading
 import time
 
 import cache
+from kit import Second, Millisecond
 
 __author__ = 'rock'
-
-_1_min = 60
-_1_hour = 60 * _1_min
-_1_day = _1_hour * 24
 
 s = sched.scheduler(time.time, time.sleep)
 log = logging.getLogger('dev')
 
 
 def clean_cache():
-    s.enter(_1_min, 0, clean_cache)
+    s.enter(Second.one_min, 0, clean_cache)
     temp = []
     for k in cache.iterator:
         now = int(round(time.time() * 1000))
         log.debug('now[%d] iter is : %s', now, k)
         k_time = int(k.split('_')[-1])
-        if (now - k_time) > (_1_hour * 1000):
+        if (now - k_time) > Millisecond.one_hour:
             temp.append(k)
     if len(temp) > 0:
         log.info('clean iterator cache.')

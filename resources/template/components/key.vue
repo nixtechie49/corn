@@ -54,10 +54,12 @@
                         let res = response.body;
                         if (res.code === 1) {
                             let data = res.data;
-                            v.stamp = data[0];
-                            let array = data[1];
-                            for (let i in array) {
-                                v.keys.push(array[i]);
+                            if (v.stamp === data[0]) {
+                                for (let i in data[1])
+                                    v.keys.push(data[1][i]);
+                            } else {
+                                v.stamp = data[0];
+                                v.keys = data[1];
                             }
                         }
                     }, function (response) {

@@ -14,6 +14,22 @@ STATIC_DIR_PATH = os.path.join(ROOT_PATH, 'static/')
 LOG_FORMAT = "[%(asctime)s]-[%(levelname)s] : %(message)s [from %(module)s.%(funcName)s.%(lineno)d]"
 
 
+class Second:
+    one_sec = 1
+    one_min = one_sec * 60
+    one_hour = one_min * 60
+    one_day = one_hour * 24
+    one_week = one_day * 7
+
+
+class Millisecond:
+    one_sec = Second.one_sec * 1000
+    one_min = one_sec * 60
+    one_hour = one_min * 60
+    one_day = one_hour * 24
+    one_week = one_day * 7
+
+
 def json_handler(obj):
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
