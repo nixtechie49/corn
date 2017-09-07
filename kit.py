@@ -45,5 +45,9 @@ def get_success(data=None):
     return json.dumps({'code': 1, 'data': data}, default=json_handler)
 
 
-def get_fail(msg):
-    return json.dumps({'code': 0, 'msg': msg}, default=json_handler)
+def get_result(code=0, data=None):
+    return json.dumps({'code': code, 'data': data}, default=json_handler)
+
+
+def get_fail(code=0, msg='Unknown Error'):
+    return json.dumps({'code': code, 'msg': msg}, default=json_handler)

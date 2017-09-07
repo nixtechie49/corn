@@ -32,7 +32,7 @@ def clean_cache():
 
 
 def clean_worker():
-    s.enter(_1_min, 0, clean_cache)
+    s.enter(Second.one_min, 0, clean_cache)
     s.run()
 
 

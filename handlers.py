@@ -114,16 +114,24 @@ class ValueHandler(RequestHandler):
 
 class ConnectionHandler(RequestHandler):
     def post(self, *args, **kwargs):
-        log.debug('args: %s', self.request.body)
+        log.debug('post args: %s', self.request.body)
         conn = json.loads(str(self.request.body, encoding='utf-8'))
         sql.add_connection(conn)
         self.write(kit.get_success())
 
-    def get(self):
-        data = sql.query(ConnInfo)
+    def get(self, conn_id=None):
+        if conn_id:
+            data = sql.get(ConnInfo, conn_id)
+        else:
+            data = sql.query(ConnInfo)
         self.write(kit.get_success(data))
 
+    def put(self, *args, **kwargs):
+        log.debug('put args: %s', self.request.body)
+        conn = json.loads(str(self.request.body, encoding='utf-8'))
+        res = sql.update_connection(conn)
+        self.write(kit.get_result(res))
 
-class ConnHandler(RequestHandler):
-    def get(self, conn_id):
-        self.write(kit.get_success())
+    def delete(self, conn_id, *args, **kwargs):
+        result = sql.del_connection(conn_id)
+        self.write(kit.get_result(result))

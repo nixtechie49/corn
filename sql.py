@@ -30,7 +30,19 @@ def add_connection(data):
               '(:name,:type,:password,:host,:port,:db,:path)'
     sql = text(pre_sql)
     res = engine.execute(sql, data)
+    log.debug('insert data result: %s', res)
     return res.lastrowid
+
+
+def update_connection(data):
+    log.debug('update data: %s', data)
+    pre_sql = 'UPDATE CONN_INFO SET ' \
+              'NAME=:name,TYPE=:type,PWD=:password,HOST=:host,PORT=:port,DB=:db,PATH=:path' \
+              ' WHERE ID=:id'
+    sql = text(pre_sql)
+    res = engine.execute(sql, data)
+    log.debug('update data result: %s', res.rowcount)
+    return res.rowcount
 
 
 def query(cls, *criterion):
@@ -54,3 +66,12 @@ def get(cls, id):
     result = q.one()
     log.debug('get result is : %s', result)
     return result
+
+
+def del_connection(id):
+    log.debug('delete connection: %s', id)
+    pre_sql = 'DELETE FROM CONN_INFO WHERE ID=:id'
+    sql = text(pre_sql)
+    res = engine.execute(sql, {'id': id})
+    log.debug('delete connection result: %s', res.rowcount)
+    return res.rowcount

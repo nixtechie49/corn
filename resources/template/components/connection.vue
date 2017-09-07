@@ -6,15 +6,16 @@
                 <small>&nbsp;</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Layout</a></li>
-                <li class="active">Top Navigation</li>
+                <li><router-link to="/"><i class="fa fa-link"></i> 连接管理</router-link></li>
+                <li class="active" v-if="connection.id">修改连接</li>
+                <li class="active" v-else>添加连接</li>
             </ol>
         </section>
         <section class="content" style="width: 60%">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">添加连接</h3>
+                    <h3 class="box-title" v-if="connection.id">修改连接</h3>
+                    <h3 class="box-title" v-else>添加连接</h3>
                 </div>
                 <div class="box-body form-horizontal">
                     <div class="form-group">
@@ -78,8 +79,12 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <button type="button" class="btn btn-default" @click="back()">取消</button>
-                    <button type="button" class="btn btn-success pull-right" @click="submit()">保存</button>
+                    <button type="button" class="btn btn-danger pull-left" @click="del()" v-if="connection.id">删除
+                    </button>
+                    <button type="button" class="btn btn-success pull-right" style="margin-left: 15px"
+                            @click="submit()">保存
+                    </button>
+                    <button type="button" class="btn btn-default pull-right" @click="back()">取消</button>
                 </div>
             </div>
         </section>
@@ -90,6 +95,7 @@
         data: function () {
             return {
                 connection: {
+                    id: null,
                     name: null,
                     type: null,
                     password: null,
@@ -152,7 +158,38 @@
             back: function () {
                 this.$router.push({path: '/'})
             },
-            submit: function () {
+            get: function (id) {
+                let v = this;
+                let url = '/connection/' + id;
+                v.$http.get(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
+                    (response) => {
+                        let res = response.body;
+                        if (res.code === 1) {
+                            let data = res.data;
+                            v.connection = data;
+                            $('.select2').val(data.type).trigger('change');
+                        }
+                    }, (response) => {
+                        console.log(response);
+                    }
+                );
+            },
+            update: function () {
+                let v = this;
+                let url = '/connection';
+                let data = this.connection;
+                v.$http.put(url, data, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
+                    function (response) {
+                        let res = response.body;
+                        if (res.code === 1) {
+                            v.$router.push('/');
+                        }
+                    }, function (response) {
+                        console.log(response);
+                    }
+                );
+            },
+            save: function () {
                 let v = this;
                 let url = '/connection';
                 let data = this.connection;
@@ -166,10 +203,34 @@
                         console.log(response);
                     }
                 );
+            },
+            del: function () {
+                let v = this;
+                let url = '/connection/' + v.connection.id;
+                v.$http.delete(url, {headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(
+                    function (response) {
+                        let res = response.body;
+                        if (res.code === 1) {
+                            v.$router.push('/');
+                        }
+                    }, function (response) {
+                        console.log(response);
+                    }
+                );
+            },
+            submit: function () {
+                let id = this.connection.id;
+                if (id)
+                    this.update();
+                else
+                    this.save();
             }
         },
         mounted: function () {
             let v = this;
+            let id = v.$route.params.connection;
+            if (id)
+                v.get(id);
             let ref = v.$refs;
             let height = document.documentElement.clientHeight;
             ref.mainContent.style.height = (height - 101) + 'px';

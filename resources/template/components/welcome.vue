@@ -2,13 +2,11 @@
     <div class="content-wrapper content-main" ref="mainContent">
         <section class="content-header">
             <h1>
-                选择连接
+                请选择
                 <small>:</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a href="#">Layout</a></li>
-                <li class="active">Top Navigation</li>
+                <li class="active"><i class="fa fa-link"></i> 连接管理</li>
             </ol>
         </section>
         <section class="content">
@@ -17,12 +15,15 @@
                     <div class="small-box bg-green">
                         <div class="inner" @click="go(c.id)" style="cursor: pointer">
                             <span class="client-head">{{ c.name }}</span>
-                            <p>Redis Cluster</p>
+                            <p v-if="c.type==1">Redis</p>
+                            <p v-else-if="c.type==2">Redis Cluster</p>
+                            <p v-else-if="c.type==3">Zookeeper</p>
+                            <p v-else>Unknown</p>
                         </div>
                         <div class="icon" @click="go(c.id)" style="cursor: pointer">
                             <i class="fa fa-play-circle"></i>
                         </div>
-                        <a href="#" class="small-box-footer">
+                        <a href="javascript:void(0)" @click="update(c.id)" class="small-box-footer">
                             <b>修改</b>&nbsp;<i class="fa fa-gear"></i>
                         </a>
                     </div>
@@ -47,9 +48,9 @@
 </template>
 <script>
     module.exports = {
-        data:function(){
+        data: function () {
             return {
-                conn:{}
+                conn: {}
             }
         },
         methods: {
@@ -58,6 +59,10 @@
             },
             add: function () {
                 this.$router.push({path: '/connection'})
+            },
+            update: function (id) {
+                console.log('update:' + id);
+                this.$router.push({path: '/connection/' + id})
             },
             listConn: function () {
                 let v = this;

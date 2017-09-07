@@ -8,6 +8,6 @@ r = [
     (r"/", handlers.HomeHandler),
     (r"/(?P<conn_id>[\d]+)/key", handlers.KeyHandler),
     (r"/connection", handlers.ConnectionHandler),
-    (r"/connection/(^([1-9][0-9]*)$)", handlers.ConnHandler),
+    (r"/connection/(?P<conn_id>[\d]+)", handlers.ConnectionHandler),
     (r"/(?P<conn_id>[\d]+)/value/(?P<key>[\S]+)", handlers.ValueHandler),
 ]
