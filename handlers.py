@@ -32,6 +32,11 @@ class KeyHandler(RequestHandler):
         except MissingArgumentError:
             match = '*'
         log.debug(stamp)
+        stamp, keys = self.get_keys(stamp, match, conn_id)
+        self.write(kit.get_success((stamp, keys)))
+
+    def get_keys(self, stamp, match, conn_id):
+        keys = []
         count = 100
         if stamp in cache.iterator:
             it = cache.iterator[stamp]
@@ -40,19 +45,17 @@ class KeyHandler(RequestHandler):
             conn = connection.take(conn_id)
             it = conn.scan_iter(match=match, count=count)
             cache.iterator[stamp] = it
-        keys = []
         i = 0
-        while i < count:
-            try:
+        try:
+            while i < count:
                 keys.append(next(it))
                 i += 1
-            except StopIteration:
-                log.debug('iter stop,delete cache key:%s', stamp)
-                del cache.iterator[stamp]
-                stamp = '-1'
-                break
+        except StopIteration:
+            log.debug('iter stop,delete cache key:%s', stamp)
+            del cache.iterator[stamp]
+            stamp = '-1'
         log.debug('load keys:%s', keys)
-        self.write(kit.get_success((stamp, keys)))
+        return stamp, keys
 
 
 class ValueHandler(RequestHandler):
