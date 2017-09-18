@@ -27,6 +27,7 @@ def clean_cache():
         log.info('clean iterator cache.')
     for k in temp:
         log.debug('del iterator cache %s', k)
+        cache.iterator[k].close()
         del cache.iterator[k]
     del temp
 
